@@ -1,0 +1,70 @@
+session log:
+	//detail //this is too hard to implement, I'll ignore it for now
+		yearPlayed
+		monthPlayed
+		dayPlayed
+		dayOfWeek (calulated from date)
+		daysOut
+	/-character []
+		id
+		name
+		level
+		changes
+		donation?
+		itemsClaimedValue (calculated from items claimed)
+		xpAdjust
+		gpAdjust
+		xpGains (calculated from xpTotal, characters.length, xpAdjust)
+		gpGains (calculated from gpTotal, characters.length, donation, gpAdjust, itemsClaimedValue)
+	outcome (derived)
+		xpTotal (calculated from treasure + poi + monsters)
+		gpTotal (calculated from treasure + poi + expenses)
+		LMF (calculated from characters.gpGains if character.donation, expenses if LMF, treasures.claimedBy if 'LMF')
+	/-treasure []
+		id
+		name
+		description
+		valuePer
+		num
+		magic item?
+		claimed by
+	/expense []
+		id
+		name
+		description
+		valuePer
+		num
+		lmf?
+	/poi []
+		id
+		name
+		hex
+		distance (could be derived from hex but not now)
+		value (derived from mpoi? and distance from wall)
+		mpoi?
+	/hexes
+		id
+		hexNumber
+		isNewHex?
+		distanceFromWall
+	/-monster []
+		id
+		name
+		cr
+		xp (derived)
+		numKilled
+		numFled
+		bonusMult
+
+
+
+TODO: figure out how to set focus when you change the pane
+
+other things to implement: 
+	make it so number doesn't fill in if it's 1?
+	change the inputs from uncontrolled to controlled?
+		https://goshakkk.name/turn-uncontrolled-into-controlled/
+
+
+NOTE: moment.js
+NOTE: what if an expedition's expenses exceed their income
