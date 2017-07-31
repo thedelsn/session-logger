@@ -1,6 +1,3 @@
-import {fieldTypes} from './definitions'
-
-
 let nextId = {
 	characters: 0,
 	treasures: 0,
@@ -25,25 +22,15 @@ export const setInfo = (selectedItem, fieldId, input) => ({
 	[fieldId]: input
 });
 
+export const setSelectedInfo = (fieldId, input) => ({
+	type: 'SET_SELECTED_INFO',
+	[fieldId]: input
+});
+
 export const setSelectedToItem = item => ({
 	type: 'SET_SELECTED_ITEM',
 	...item
 })
-
-export const setInputValuesToItem = item => {
-	const fields = fieldTypes[item.itemType];
-	fields.forEach(fieldType => {
-		const field = document.getElementById(fieldType.id);
-		if (field) {
-			field.value = item[fieldType.id] || '';
-			field.checked = item[fieldType.id] || false;
-		}
-	});
-	const claimedByField =document.getElementById('claimedBy') 
-	if (claimedByField) {
-		claimedByField.value = item.claimedBy;
-	}
-}
 
 export const setVisiblePane = (visiblePane) => ({
 	type: 'SET_VISIBLE_PANE',

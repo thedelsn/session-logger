@@ -10,17 +10,18 @@ const Link = ({
 	toSelect
 }) => {
 	if (active) {
-		return <span>{children}</span>
+		return <button disabled='true' className='headerLink selected'>{children}</button>
 	}
 	return(
-		<a href='#'
+		<button
+			className='headerLink notSelected'
 			onClick={e => {
 				e.preventDefault();
 				onClick(toSelect);
 			}}
 		>
 			{children}
-		</a>
+		</button>
 	);
 };
 

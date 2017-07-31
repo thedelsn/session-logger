@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {addItem, setInputValuesToItem, setSelectedToItem} from '../actions';
+import {addItem, setSelectedToItem} from '../actions';
 
 let AddItem = ({ 
 	dispatch,
@@ -13,7 +13,6 @@ let AddItem = ({
 		const action = addItem(itemType);
 		dispatch(action);
 		dispatch(setSelectedToItem({itemType: action.itemType, id: action.id}))
-		setInputValuesToItem({itemType: itemType});
 		document.getElementById(toFocusId).focus();
 	}}
 	>

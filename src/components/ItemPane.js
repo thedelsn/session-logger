@@ -2,9 +2,9 @@ import React from 'react';
 
 import AddItem from './AddItem';
 import DeleteItem from './DeleteItem';
-import {setSelectedToItem, setInputValuesToItem, setInfo} from '../actions';
+import {setSelectedToItem, setInfo} from '../actions';
 import fieldTypes from '../definitions';
-import InputFields from '../components/InputFields';
+import InputFields from '../components/InputFields2';
 import ItemList from './ItemList';
 
 //presentational
@@ -17,7 +17,7 @@ const ItemPane = ({
 	onItemClick, 
 	onInputFieldChange
 }) => (
-	<div>
+	<div className='itemPane'>
 		<AddItem
 			itemType={itemType}
 			toFocusId={fieldTypes[itemType][0].id}
@@ -65,7 +65,7 @@ const DisplayItemPane = ({
 			itemLabel={itemLabel}
 			onItemClick={(item) => {
 				dispatch(setSelectedToItem(item));
-				setInputValuesToItem(item);
+				//setInputValuesToItem(item);
 			}}
 			onInputFieldChange={(
 				input, 

@@ -1,7 +1,5 @@
 import React from 'react';
 import {connect} from 'react-redux';
-//import {setInfo} from '../actions';
-
 
 const InputField = ({
 	field, 
@@ -10,11 +8,11 @@ const InputField = ({
 }) => {
 	let input;
 	return (
-		<div>
+		<div className='inputFields'>
 			{field.display}
 			<input
 				{...field}
-				defaultValue= {selectedItem[field.id]}
+				defaultValue= {selectedItem[field.id] || ''}
 				defaultChecked= {selectedItem[field.id]}
 				ref={node => {input = node;}}
 				onChange={() => onFieldChange(
@@ -29,7 +27,11 @@ const InputField = ({
 	);
 }
 
-const CharacterSelect = ({characters, onFieldChange, selectedItem}) => {
+const CharacterSelect = ({
+	characters, 
+	onFieldChange, 
+	selectedItem
+}) => {
 	let input;
 	return (
 		<select 
@@ -37,7 +39,9 @@ const CharacterSelect = ({characters, onFieldChange, selectedItem}) => {
 			id='claimedBy'
 			defaultValue={selectedItem.claimedBy}
 			ref={node => {input = node}}
-			onChange={() => onFieldChange(input.value, 'claimedBy')}
+			onChange={() => onFieldChange(
+				input.value, 'claimedBy'
+			)}
 		>
 			<option value={'none'}>Unclaimed</option>
 			{characters.map(character => (
@@ -55,7 +59,12 @@ const CharacterSelect = ({characters, onFieldChange, selectedItem}) => {
 	);
 }
 
-const ExtraInputFields = ({itemType, data, onFieldChange, selectedItem}) => {
+const ExtraInputFields = ({
+	itemType, 
+	data, 
+	onFieldChange, 
+	selectedItem
+}) => {
 	switch (itemType) {
 		case 'treasures':
 			return <div>
@@ -64,7 +73,11 @@ const ExtraInputFields = ({itemType, data, onFieldChange, selectedItem}) => {
 					selectedItem={selectedItem}
 					onFieldChange={
 						(input, fieldId, selectedItem) => 
-						onFieldChange(input, fieldId, selectedItem)
+						onFieldChange(
+							input, 
+							fieldId, 
+							selectedItem
+						)
 					}
 				/>
 			</div>
@@ -77,8 +90,14 @@ const ExtraInputFields = ({itemType, data, onFieldChange, selectedItem}) => {
 const mapStateToProps = (state, ownProps) => ({
 	data: state.data,
 	itemType: ownProps.itemType,
-	onFieldChange: (input, fieldId, selectedItem) =>
-		ownProps.onFieldChange(input, fieldId, selectedItem),
+	onFieldChange: ((
+		input, fieldId, selectedItem) =>
+		ownProps.onFieldChange(
+			input, 
+			fieldId, 
+			selectedItem
+		)
+	),
 	selectedItem: state.selectedItem
 });
 const DisplayExtraInputFields = connect(
@@ -98,7 +117,11 @@ const InputFields = ({
 				selectedItem={selectedItem}
 				onFieldChange={
 					(input,fieldId) => 
-					onInputFieldChange(input, fieldId, selectedItem)
+					onInputFieldChange(
+						input, 
+						fieldId, 
+						selectedItem
+					)
 				}
 			/>
 		)}
@@ -106,7 +129,11 @@ const InputFields = ({
 			itemType={fields[0].itemType}
 			onFieldChange={
 				(input, fieldId) =>
-				onInputFieldChange(input, fieldId, selectedItem)
+				onInputFieldChange(
+					input, 
+					fieldId, 
+					selectedItem
+				)
 			}
 		/>
 	</div>

@@ -2,7 +2,7 @@ import React from 'react';
 import {xpTable} from '../definitions'
 
 //helper function
-const itemOutput = (item) => {
+const itemText = (item) => {
 	let output;
 	const crIfValid = (cr) => {
 		if (xpTable[cr]) {
@@ -69,7 +69,7 @@ const Item = ({
 				'none'
 		}}
 	>
-		{itemOutput(item)}
+		{itemText(item)}
 	</li>
 );
 
@@ -78,7 +78,7 @@ const ItemList = ({
 	onItemClick,
 	selectedItem
 }) => (
-	<ul>
+	<ul className='itemList'>
 		{items.map(item => (
 			<Item
 				key= {item.id}
