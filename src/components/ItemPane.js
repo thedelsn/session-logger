@@ -18,14 +18,6 @@ const ItemPane = ({
 	onInputFieldChange
 }) => (
 	<div className='itemPane'>
-		<AddItem
-			itemType={itemType}
-			toFocusId={fieldTypes[itemType][0].id}
-		> Add {itemLabel} </AddItem>
-		<DeleteItem 
-			selectedItem={selectedItem}
-			toSelect={toSelectOnDelete}
-		> Delete {itemLabel} </DeleteItem>
 		<InputFields
 			fields={fieldTypes[itemType]}
 			selectedItem={selectedItem}
@@ -33,6 +25,7 @@ const ItemPane = ({
 				(selectedItem, input, fieldId) => {
 				onInputFieldChange(selectedItem, input, fieldId)
 			}}
+			toSelectOnDelete={toSelectOnDelete}
 		/>
 		<ItemList
 			items={items}
@@ -54,12 +47,6 @@ const DisplayItemPane = ({
 	return (
 		<ItemPane
 			selectedItem= {state.selectedItem}
-			//this is -2 because I want the end of the
-			//array (-1) after something has been deleted (-1)
-			toSelectOnDelete= {
-				items[items.length -2] || 
-				{itemType: itemType}
-			}
 			items={items}
 			itemType={itemType}
 			itemLabel={itemLabel}

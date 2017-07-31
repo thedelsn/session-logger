@@ -197,15 +197,17 @@ const generateLog = (state) => {
 				output+= ' total)' :
 				output+= ')'
 			;
-			if (t.claimedBy>=-1) {
+			/*
+			if (t.treasureClaimedBy>=-1) {
 				output += ' - claimed by ';
 				t.claimedBy === '-1' ?
 					output += 'the LMFfAG' :
 					output += characters.filter(
-						(c)=>c.id*1===t.claimedBy*1
+						(c)=>c.id*1===t.treasureClaimedBy*1
 					)[0].charName
 				;
 			}
+			*/
 			if (t.treasureDescription) {
 				output += '\n-' +
 					t.treasureDescription

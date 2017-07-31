@@ -3,20 +3,30 @@ import {connect} from 'react-redux';
 import {deleteItem, setSelectedToItem} from '../actions';
 
 
-let DeleteItem = ({
-	dispatch,
+const DeleteItem = ({
 	selectedItem,
-	toSelect,
+	onClick,
 	children
 }) => (
-	<button onClick={(item) => {
-		dispatch(deleteItem(selectedItem));
-		dispatch(setSelectedToItem(toSelect));
-	}}
+	<button 
+		onClick={() => onClick(selectedItem)}
 	>
 		{children}
 	</button>
 );
-DeleteItem = connect()(DeleteItem);
 
-export default DeleteItem;
+const mapStateToProps = (state) => ({
+	selectedItem: state.selectedItem,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+	onClick: ((selectedItem, toSelect) => {
+		dispatch(deleteItem(selectedItem));
+	})
+});
+const DisplayDeleteItem = connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(DeleteItem);
+
+export default DisplayDeleteItem;
