@@ -1,84 +1,17 @@
 import React from 'react';
-import {connect} from 'react-redux';
 
-const InputField = ({
-	field, 
-	onFieldChange,
-	selectedItem
-}) => {
-	let input;
-	return (
-		<div className='inputFields'>
-			{field.display}
-			<input
-				{...field}
-				defaultValue= {selectedItem[field.id] || ''}
-				defaultChecked= {selectedItem[field.id]}
-				ref={node => {input = node;}}
-				onChange={() => onFieldChange(
-					field.type!=='checkbox' ?
-						input.value :
-						input.checked
-					,
-					field.id,
-				)}
-			/>
-		</div>
-	);
-}
+import DisplayInputField from './InputField';
+import AddItem from './AddItem';
+import DeleteItem from './DeleteItem';
+import CharacterSelectField from './InputCharacterSelectField'
 
-const CharacterSelect = ({
-	characters, 
-	onFieldChange, 
-	selectedItem
-}) => {
-	let input;
-	return (
-		<select 
-			name='selectCharacter'
-			id='claimedBy'
-			defaultValue={selectedItem.claimedBy}
-			ref={node => {input = node}}
-			onChange={() => onFieldChange(
-				input.value, 'claimedBy'
-			)}
-		>
-			<option value={'none'}>Unclaimed</option>
-			{characters.map(character => (
-				<option 
-					value={character.id}
-					key={character.id}
-				>
-					{character.charName}
-				</option>
-			))}
-			<option value='-1' key='lmf'>
-				LMFfAG
-			</option>
-		</select>
-	);
-}
-
-const ExtraInputFields = ({
-	itemType, 
-	data, 
-	onFieldChange, 
-	selectedItem
-}) => {
+const ExtraInputFields = ({itemType}) => {
 	switch (itemType) {
 		case 'treasures':
 			return <div>
-				Claimed By<CharacterSelect
-					characters={data.characters}
-					selectedItem={selectedItem}
-					onFieldChange={
-						(input, fieldId, selectedItem) => 
-						onFieldChange(
-							input, 
-							fieldId, 
-							selectedItem
-						)
-					}
+				Claimed By
+				<CharacterSelectField 
+					id='treasureClaimedBy'
 				/>
 			</div>
 		default:
@@ -86,55 +19,32 @@ const ExtraInputFields = ({
 	}
 };
 
-//DisplayExtraInputFields
-const mapStateToProps = (state, ownProps) => ({
-	data: state.data,
-	itemType: ownProps.itemType,
-	onFieldChange: ((
-		input, fieldId, selectedItem) =>
-		ownProps.onFieldChange(
-			input, 
-			fieldId, 
-			selectedItem
-		)
-	),
-	selectedItem: state.selectedItem
-});
-const DisplayExtraInputFields = connect(
-	mapStateToProps
-)(ExtraInputFields);
-
 const InputFields = ({
 	fields,
-	onInputFieldChange,
 	selectedItem
 }) => (
 	<div>
+		<div className='addDeleteButtons'>
+			<AddItem
+				itemType={fields[0].itemType}
+				toFocusId={fields[0].id}
+			>
+				Add Item
+			</AddItem>
+			<DeleteItem
+				selectedItem={selectedItem}
+			>
+				Delete Item
+			</DeleteItem>
+		</div>
 		{fields.map(field =>
-			<InputField
+			<DisplayInputField
 				key={field.id}
 				field={field}
-				selectedItem={selectedItem}
-				onFieldChange={
-					(input,fieldId) => 
-					onInputFieldChange(
-						input, 
-						fieldId, 
-						selectedItem
-					)
-				}
 			/>
 		)}
-		<DisplayExtraInputFields
-			itemType={fields[0].itemType}
-			onFieldChange={
-				(input, fieldId) =>
-				onInputFieldChange(
-					input, 
-					fieldId, 
-					selectedItem
-				)
-			}
+		<ExtraInputFields
+			itemType={selectedItem.itemType}
 		/>
 	</div>
 );

@@ -45,19 +45,17 @@ const DisplayLink = connect(
 )(Link);
 
 const Header = () => (
-	<p>
+	<p className='header'>
 		<DisplayLink
 			visiblePane='characters'
 		>
 			Characters
 		</DisplayLink>
-		{' '}
 		<DisplayLink
 			visiblePane='treasures'
 		>
 			Treasure
 		</DisplayLink>
-		{' '}
 		<DisplayLink
 			visiblePane='monsters'
 		>

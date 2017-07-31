@@ -249,6 +249,7 @@ const LogOutput = ({state}) => {
 	return (
 		//TODO: delete the rows and columns and format size w CSS 
 		<textarea
+			className='output'
 			rows='30'
 			cols='60'
 			value={generateLog(state)}

@@ -2,7 +2,7 @@ import React from 'react';
 
 import {setSelectedToItem, setInfo} from '../actions';
 import fieldTypes from '../definitions';
-import InputFields from '../components/InputFields2';
+import InputFields from '../components/InputFields';
 import ItemList from './ItemList';
 
 //presentational
@@ -17,6 +17,7 @@ const ItemPane = ({
 }) => (
 	<div className='itemPane'>
 		<InputFields
+			className= 'inputFields'
 			fields={fieldTypes[itemType]}
 			selectedItem={selectedItem}
 			onInputFieldChange={

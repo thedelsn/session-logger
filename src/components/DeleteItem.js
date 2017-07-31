@@ -9,6 +9,7 @@ const DeleteItem = ({
 	children
 }) => (
 	<button 
+		className='deleteButton'
 		onClick={() => onClick(selectedItem)}
 	>
 		{children}

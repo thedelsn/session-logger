@@ -11,19 +11,46 @@ ul {
 }
 
 .headerLink {
-	border: 1px solid grey;
+	margin: 0;
+	border: 1px solid lightgrey;
 	background: lightgrey;
 	color: black;
+	padding: .5em;
+}
+.header {
+	margin: .25em;
 }
 
 .selected {
-	border: 0px solid white;
+	border: 1px solid lightgrey;
 	background: white;
-}
-
-.inputFields {
 
 }
+
+.addDeleteButtons {
+	padding: .25em;
+}
+
+.addButton, .deleteButton {
+	border: 1px solid grey;
+	padding: .25em;
+	margin: .125em;
+}
+
+.addButton {
+	background: lightgreen;
+}
+
+.deleteButton {
+	background: salmon;
+}
+
 .itemList {
+	padding: 0.5em;
+	display: inline;
+}
 
+.output {
+	font-family: times;
+	font-size: 1em;
 }

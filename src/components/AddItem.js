@@ -8,13 +8,14 @@ let AddItem = ({
 	toFocusId,
 	children
 }) => (
-	<button onClick={() => {
-		//call the action to get the id of the new item
-		const action = addItem(itemType);
-		dispatch(action);
-		dispatch(setSelectedToItem({itemType: action.itemType, id: action.id}))
-		document.getElementById(toFocusId).focus();
-	}}
+	<button 
+		className= 'addButton'
+		onClick={() => {
+			const action = addItem(itemType);
+			dispatch(action);
+			dispatch(setSelectedToItem({itemType: action.itemType, id: action.id}))
+			document.getElementById(toFocusId).focus();
+		}}
 	>
 		{children}
 	</button>
