@@ -1,7 +1,5 @@
 import React from 'react';
 
-import AddItem from './AddItem';
-import DeleteItem from './DeleteItem';
 import {setSelectedToItem, setInfo} from '../actions';
 import fieldTypes from '../definitions';
 import InputFields from '../components/InputFields2';

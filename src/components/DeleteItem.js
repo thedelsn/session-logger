@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {deleteItem, setSelectedToItem} from '../actions';
+import {deleteItem} from '../actions';
 
 
 const DeleteItem = ({

@@ -181,6 +181,10 @@ const generateLog = (state) => {
 	const treasureSection = () => {
 		const describeTreasure = (t) => {
 			let output='';
+			let claimedByChars = characters.filter(
+						(c)=>c.id*1===t.treasureClaimedBy*1
+					);
+
 			output += t.treasureName;
 			if (t.treasureNum > 1) {
 				output += 
@@ -197,17 +201,13 @@ const generateLog = (state) => {
 				output+= ' total)' :
 				output+= ')'
 			;
-			/*
-			if (t.treasureClaimedBy>=-1) {
+			if (t.treasureClaimedBy==='-1' || claimedByChars.length > 0) {
 				output += ' - claimed by ';
-				t.claimedBy === '-1' ?
+				t.treasureClaimedBy === '-1' ?
 					output += 'the LMFfAG' :
-					output += characters.filter(
-						(c)=>c.id*1===t.treasureClaimedBy*1
-					)[0].charName
+					output += claimedByChars[0].charName
 				;
 			}
-			*/
 			if (t.treasureDescription) {
 				output += '\n-' +
 					t.treasureDescription

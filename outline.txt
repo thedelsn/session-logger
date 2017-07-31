@@ -62,8 +62,6 @@ TODO: figure out how to set focus when you change the pane
 
 other things to implement: 
 	make it so number doesn't fill in if it's 1?
-	change the inputs from uncontrolled to controlled?
-		https://goshakkk.name/turn-uncontrolled-into-controlled/
 
 
 NOTE: moment.js
