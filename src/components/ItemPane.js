@@ -8,23 +8,19 @@ import ItemList from './ItemList';
 //presentational
 const ItemPane = ({
 	selectedItem, 
-	toSelectOnDelete,
 	items, 
-	itemType, 
-	itemLabel, 
+	itemType,
 	onItemClick, 
 	onInputFieldChange
 }) => (
 	<div className='itemPane'>
 		<InputFields
-			className= 'inputFields'
 			fields={fieldTypes[itemType]}
 			selectedItem={selectedItem}
 			onInputFieldChange={
 				(selectedItem, input, fieldId) => {
 				onInputFieldChange(selectedItem, input, fieldId)
 			}}
-			toSelectOnDelete={toSelectOnDelete}
 		/>
 		<ItemList
 			items={items}
@@ -42,11 +38,10 @@ const DisplayItemPane = ({
 	state,
 	dispatch
 }) => {
-	const items = state.data[itemType];
 	return (
 		<ItemPane
 			selectedItem= {state.selectedItem}
-			items={items}
+			items={state.data[itemType]}
 			itemType={itemType}
 			itemLabel={itemLabel}
 			onItemClick={(item) => {

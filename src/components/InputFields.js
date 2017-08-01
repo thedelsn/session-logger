@@ -23,7 +23,7 @@ const InputFields = ({
 	fields,
 	selectedItem
 }) => (
-	<div>
+	<div className= 'inputFields'>
 		<div className='addDeleteButtons'>
 			<AddItem
 				itemType={fields[0].itemType}
