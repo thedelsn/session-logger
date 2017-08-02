@@ -32,13 +32,16 @@ const SessionLoggerApp = () => {
 	const state = store.getState();
 	return (
 		<div>
+			<div className='test'>
 			<Header />
+			
 			<DisplayItemPane
 				itemType={state.visiblePane}
 				itemLabel='Item'
 				state={state}
 				dispatch={(action) => {store.dispatch(action)}}
 			/>
+			</div>
 			<LogOutput
 				state={state}
 			/>

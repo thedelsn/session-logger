@@ -28,7 +28,8 @@ body {
 .inputFields {
 	width: 45%;
 	max-width: 300px;
-	float: left;
+	position: left;
+	display: inline-block;
 }
 
 	.addDeleteButtons {
@@ -60,10 +61,14 @@ body {
 	}
 
 .itemList {
-	float: right;
+	min-width: 300px;
+	width: 30%;
 	font-size: .9em;
 	font-family: sans-serif;
 	list-style: none;
+	border: 1px solid blue;
+	display: inline-block;
+	margin: auto;
 }
 
 /*OUTPUT PANE*/
@@ -75,21 +80,10 @@ body {
 
 @media screen and (max-width: 550px) {
 	.inputFields {
-		width: 90%;
-		float: none;
+		font-size: .75em;
 	}
-	.inputField {
-		float: left;
-	}
-	.inputFields input {
-		float: right;
-	}
-	.itemList {
-		width: 90%;
-		float: none;
-	}
-}
 
+}
 
 
 
