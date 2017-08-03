@@ -6,6 +6,7 @@ const generateLog = (state) => {
 	const characters = state.data.characters;
 	const treasures = state.data.treasures;
 	const monsters = state.data.monsters;
+	const expenses = state.data.expenses;
 
 	const listToOutputText = (prefix, itemNames) => {
 		let output = '';
@@ -72,22 +73,31 @@ const generateLog = (state) => {
 		for (const t of treasures) {
 			gpTotal += t.valuePer * t.treasureNum
 		}
+		for (const e of expenses) {
+			e.lmfExpense ?
+			lmfEarned -= e.valuePer * e.expenseNum :
+			gpTotal -= e.valuePer * e.expenseNum
+		}
 		const gpPerPerson=gpTotal/characters.length
 		for (const c of characters) {
 			let treasureClaimed = [];
-			//the *1 is to make it interpret gpAdjust as a number
-			let goldEarned=gpPerPerson+c.gpAdjust*1;
+			let goldEarned=gpPerPerson+c.gpAdjust;
 			let goldSpent=0;
 
 			for (const t of treasures) {
-				if (t.claimedBy*1 === c.id*1) {
+				if (t.treasureClaimedBy === c.id) {
 					goldSpent += t.valuePer*t.treasureNum;
-					treasureClaimed.push(t.treasureName);
+					treasureClaimed.push(
+					t.treasureName +
+					(t.treasureNum > 1 ?
+					'(x' + t.treasureNum + ')' :
+					'')
+				);
 				}
 			}
 
 			output += c.charName + ' earned '
-			if (c.isDonating) {
+			if (c.isDonating && gpTotal>0) {
 				lmfEarned += goldEarned/6;
 				output += 
 					Math.round(goldEarned*5/6 - goldSpent) +
@@ -104,9 +114,14 @@ const generateLog = (state) => {
 			output += '\n';
 		}
 		for (const t of treasures) {
-			if (t.claimedBy*1 === -1) {
+			if (t.treasureClaimedBy === -1) {
 				lmfEarned -= t.valuePer*t.treasureNum;
-				lmfClaimed.push(t.treasureName);
+				lmfClaimed.push(
+					t.treasureName +
+					(t.treasureNum > 1 ?
+					'(x' + t.treasureNum + ')' :
+					'')
+				);
 			}
 		}
 		if (lmfEarned) {
@@ -148,7 +163,7 @@ const generateLog = (state) => {
 				output += 
 					c.charName +
 					' earned ' +
-					Math.round(totalXp / characters.length + c.xpAdjust*1) +
+					Math.round(totalXp / characters.length + c.xpAdjust) +
 					' xp\n'
 				:
 				unadjustedChars.push(c)
@@ -182,9 +197,8 @@ const generateLog = (state) => {
 		const describeTreasure = (t) => {
 			let output='';
 			let claimedByChars = characters.filter(
-						(c)=>c.id*1===t.treasureClaimedBy*1
+						(c)=>c.id===t.treasureClaimedBy
 					);
-
 			output += t.treasureName;
 			if (t.treasureNum > 1) {
 				output += 
@@ -201,9 +215,9 @@ const generateLog = (state) => {
 				output+= ' total)' :
 				output+= ')'
 			;
-			if (t.treasureClaimedBy==='-1' || claimedByChars.length > 0) {
+			if (t.treasureClaimedBy===-1 || claimedByChars.length > 0) {
 				output += ' - claimed by ';
-				t.treasureClaimedBy === '-1' ?
+				t.treasureClaimedBy === -1 ?
 					output += 'the LMFfAG' :
 					output += claimedByChars[0].charName
 				;

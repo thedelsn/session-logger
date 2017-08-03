@@ -52,14 +52,19 @@ const Header = () => (
 			Characters
 		</DisplayLink>
 		<DisplayLink
+			visiblePane='monsters'
+		>
+			Encounters
+		</DisplayLink>
+		<DisplayLink
 			visiblePane='treasures'
 		>
 			Treasure
 		</DisplayLink>
 		<DisplayLink
-			visiblePane='monsters'
+			visiblePane='expenses'
 		>
-			Encounters
+			Expenses
 		</DisplayLink>
 	</p>
 )

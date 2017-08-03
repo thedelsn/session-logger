@@ -91,7 +91,7 @@ export const fieldTypes = {
 			display: 'Magic Item?',
 			type: 'checkbox'
 		}
-		//claimedBy needs to be implemented separately
+		//treasureClaimedBy is implemented separately
 	],
 	monsters: [
 		{
@@ -118,8 +118,40 @@ export const fieldTypes = {
 			display: '# Fled',
 			type: 'number'
 		},
-		//bonusMult needs to be implemented separately
-	]
+		//bonusMult is implemented separately
+	],
+	expenses: [
+		{
+			id: 'expenseName',
+			itemType: 'expenses',
+			display: 'Name',
+			type: 'text'
+		},
+		{
+			id: 'expenseDescription',
+			itemType: 'expenses',
+			display: 'Description',
+			type: 'text'
+		},
+		{
+			id: 'valuePer',
+			itemType: 'expenses',
+			display: 'Value Per',
+			type: 'number'
+		},
+		{
+			id: 'expenseNum',
+			itemType: 'expenses',
+			display: 'Number',
+			type: 'number'
+		},
+		{
+			id: 'lmfExpense',
+			itemType: 'expenses',
+			display: 'LMF Expense?',
+			type: 'checkbox'
+		},
+	],
 }
 
 export default fieldTypes;

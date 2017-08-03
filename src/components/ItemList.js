@@ -3,26 +3,18 @@ import {xpTable} from '../definitions'
 
 //helper function
 const itemText = (item) => {
-	let output;
-	const crIfValid = (cr) => {
-		if (xpTable[cr]) {
-			return 'CR ' + cr;
-		}
-		return '!!!INVALID CR!!!'
-	}
 	switch (item.itemType) {
 		case 'characters':
-			output=(<div>
+			return(<div>
 				{item.charName || '[Name]'}
 				, Level {item.charLevel || '[Level]'}
 				{' '}
 				{item.charClass || '[Class]'}
 			</div>);
-			break;
 		case 'treasures':
-			output=(<div>
+			return(<div>
 				{item.treasureName || '[Name]'}
-				, {item.valuePer || '0'}
+				, {item.valuePer}
 				{' '} gp
 				{item.treasureNum >1 ?
 					' (x' + item.treasureNum + ')' :
@@ -34,23 +26,38 @@ const itemText = (item) => {
 				 	null
 				}
 			</div>);
-			break;
 		case 'monsters':
-			output=(<div>
+			const crIfValid = (cr) => {
+				if (xpTable[cr]) {
+					return 'CR ' + cr;
+				}
+				return '!!!INVALID CR!!!'
+			}
+			return(<div>
 				{item.monsterName || '[Name]'}
 				, {crIfValid(item.cr)}
 				{' '}(
-				{item.numKilled || '0'}
+				{item.numKilled}
 				{' '} killed, {' '}
-				{item.numFled || '0'}
+				{item.numFled}
 				{' '} fled)
 			</div>);
-			break;
+		//TODO: finish this!
+		case 'expenses':
+			return(<div>
+				{item.expenseName || '[Name]'}
+				, {item.valuePer}
+				{' '} gp
+				{' (x' + item.expenseNum + ')'}
+				{
+					item.lmfExpense?
+					' (LMF)' :
+					null
+				}
+			</div>);
 		default:
-			output=('');
-			break;
+			return('');
 	}
-	return output;
 }
 
 const Item = ({

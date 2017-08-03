@@ -34,7 +34,9 @@ session log:
 		description
 		valuePer
 		num
-		lmf?
+		lmfExpense?
+	**expense
+		rations = daysOut * characters.length + adjustRations
 	/poi []
 		id
 		name
@@ -57,12 +59,11 @@ session log:
 		bonusMult
 
 
-
 TODO: figure out how to set focus when you change the pane
+TODO: implement POI
 
-other things to implement: 
-	make it so number doesn't fill in if it's 1?
-
+maybe: implement details
+maybe: implement rations
+maybe: move potion buttons to beside potions in item list
 
 NOTE: moment.js
-NOTE: what if an expedition's expenses exceed their income

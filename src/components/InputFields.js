@@ -3,15 +3,37 @@ import React from 'react';
 import DisplayInputField from './InputField';
 import AddItem from './AddItem';
 import DeleteItem from './DeleteItem';
-import CharacterSelectField from './InputCharacterSelectField'
+import CharacterSelectField from './InputCharacterSelectField';
+import BonusMultSelectField from './InputBonusMultSelectField';
+import AdjustPotionButton from './AdjustPotionButton';
 
-const ExtraInputFields = ({itemType}) => {
+const PrependInputFields = ({itemType}) => {
+	switch (itemType) {
+		case 'expenses':
+			return <div>
+				<AdjustPotionButton paidBy='lmf' plusOrMinus='plus'/>
+				<AdjustPotionButton paidBy='lmf' plusOrMinus='minus'/>
+				<AdjustPotionButton paidBy='party' plusOrMinus='plus'/>
+				<AdjustPotionButton paidBy='party' plusOrMinus='minus'/>
+			</div>
+		default:
+			return null;
+	}
+};
+
+const AppendInputFields = ({itemType}) => {
 	switch (itemType) {
 		case 'treasures':
 			return <div>
 				Claimed By
 				<CharacterSelectField 
 					id='treasureClaimedBy'
+				/>
+			</div>
+		case 'monsters':
+			return <div>
+				Bonus? <BonusMultSelectField
+					id='bonusMult'
 				/>
 			</div>
 		default:
@@ -37,13 +59,16 @@ const InputFields = ({
 				Delete Item
 			</DeleteItem>
 		</div>
+		<PrependInputFields
+			itemType={selectedItem.itemType}
+		/>
 		{fields.map(field =>
 			<DisplayInputField
 				key={field.id}
 				field={field}
 			/>
 		)}
-		<ExtraInputFields
+		<AppendInputFields
 			itemType={selectedItem.itemType}
 		/>
 	</div>

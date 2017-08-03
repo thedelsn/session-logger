@@ -2,6 +2,8 @@ let nextId = {
 	characters: 0,
 	treasures: 0,
 	monsters: 0,
+	expenses: 2,
+	poi: 0,
 };
 export const addItem = (itemType) => ({
 	type: 'ADD_ITEM',
@@ -20,6 +22,13 @@ export const setInfo = (selectedItem, fieldId, input) => ({
 	itemType: selectedItem.itemType,
 	id: selectedItem.id,
 	[fieldId]: input
+});
+
+export const adjustPotions = (expenseId, plusOrMinus) => ({
+	type: 'ADJUST_POTIONS',
+	itemType: 'expenses',
+	id: expenseId,
+	plusOrMinus,
 });
 
 export const setSelectedInfo = (fieldId, input) => ({

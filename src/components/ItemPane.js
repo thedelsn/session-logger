@@ -5,7 +5,6 @@ import fieldTypes from '../definitions';
 import InputFields from '../components/InputFields';
 import ItemList from './ItemList';
 
-//presentational
 const ItemPane = ({
 	selectedItem, 
 	items, 
@@ -46,7 +45,6 @@ const DisplayItemPane = ({
 			itemLabel={itemLabel}
 			onItemClick={(item) => {
 				dispatch(setSelectedToItem(item));
-				//setInputValuesToItem(item);
 			}}
 			onInputFieldChange={(
 				input, 
