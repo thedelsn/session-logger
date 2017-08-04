@@ -13,7 +13,7 @@ import Header from './components/Header';
 import DisplayItemPane from './components/ItemPane';
 
 
-import populateTestStore from './tests'
+import populateInitialStore from './populateInitialStore'
 
 //import {setSelectedToItem, setInputValuesToItem} from './actions'
 
@@ -25,37 +25,37 @@ import populateTestStore from './tests'
 
 const store = createStore(sessionLoggerApp);
 
-populateTestStore(store);
-
+populateInitialStore(store);
 
 const SessionLoggerApp = () => {
-	const state = store.getState();
-	return (
-		<div>
-			<div className='test'>
-			<Header />
-			
-			<DisplayItemPane
-				itemType={state.visiblePane}
-				itemLabel='Item'
-				state={state}
-				dispatch={(action) => {store.dispatch(action)}}
-			/>
-			</div>
-			<LogOutput
-				state={state}
-			/>
-		</div>
-	);
+  const state = store.getState();
+  return (
+    <div>
+      <div className='test'>
+      <Header />
+      
+      <DisplayItemPane
+        itemType={state.visiblePane}
+        itemLabel='Item'
+        state={state}
+        dispatch={(action) => {store.dispatch(action)}}
+      />
+      </div>
+      <LogOutput
+        state={state}
+      />
+    </div>
+  );
 }
 
 const render = () => {
-	ReactDOM.render(
-		<Provider store={store} {...store.getState()}>
-			<SessionLoggerApp />
-		</Provider>,
-		document.getElementById('root')
-	);
+  //TODO: remove spread over store once I'm done testing!!
+  ReactDOM.render(
+    <Provider store={store} {...store.getState()}>
+      <SessionLoggerApp />
+    </Provider>,
+    document.getElementById('root')
+  );
 };
 
 store.subscribe(render);

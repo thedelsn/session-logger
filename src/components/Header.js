@@ -4,69 +4,74 @@ import {connect} from 'react-redux';
 //import fieldTypes from '../definitions';
 
 const Link = ({
-	active,
-	children,
-	onClick,
-	toSelect
+  active,
+  children,
+  onClick,
+  toSelect
 }) => {
-	if (active) {
-		return <button disabled='true' className='headerLink selected'>{children}</button>
-	}
-	return(
-		<button
-			className='headerLink notSelected'
-			onClick={e => {
-				e.preventDefault();
-				onClick(toSelect);
-			}}
-		>
-			{children}
-		</button>
-	);
+  if (active) {
+    return <button disabled='true' className='headerLink selected'>{children}</button>
+  }
+  return(
+    <button
+      className='headerLink notSelected'
+      onClick={e => {
+        e.preventDefault();
+        onClick(toSelect);
+      }}
+    >
+      {children}
+    </button>
+  );
 };
 
 //DisplayLink
 const mapStateToProps = (state, ownProps) => ({
-	active: ownProps.visiblePane ===
-	state.visiblePane,
-	toSelect: (state.data[ownProps.visiblePane] ?
-		state.data[ownProps.visiblePane][0] || {itemType: ownProps.visiblePane} : 
-		{itemType: ownProps.visiblePane})
+  active: ownProps.visiblePane ===
+  state.visiblePane,
+  toSelect: (state.data[ownProps.visiblePane] ?
+    state.data[ownProps.visiblePane][0] || {itemType: ownProps.visiblePane} : 
+    {itemType: ownProps.visiblePane})
 });
 const mapDispatchToProps = (dispatch, ownProps) => ({
-	onClick: (toSelect) => {
-		dispatch(setVisiblePane(ownProps.visiblePane));
-		dispatch(setSelectedToItem(toSelect));
-	}
+  onClick: (toSelect) => {
+    dispatch(setVisiblePane(ownProps.visiblePane));
+    dispatch(setSelectedToItem(toSelect));
+  }
 });
 const DisplayLink = connect(
-	mapStateToProps,
-	mapDispatchToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(Link);
 
 const Header = () => (
-	<p className='header'>
-		<DisplayLink
-			visiblePane='characters'
-		>
-			Characters
-		</DisplayLink>
-		<DisplayLink
-			visiblePane='monsters'
-		>
-			Encounters
-		</DisplayLink>
-		<DisplayLink
-			visiblePane='treasures'
-		>
-			Treasure
-		</DisplayLink>
-		<DisplayLink
-			visiblePane='expenses'
-		>
-			Expenses
-		</DisplayLink>
-	</p>
+  <p className='header'>
+    <DisplayLink
+      visiblePane='characters'
+    >
+      Characters
+    </DisplayLink>
+    <DisplayLink
+      visiblePane='monsters'
+    >
+      Encounters
+    </DisplayLink>
+    <DisplayLink
+      visiblePane='treasures'
+    >
+      Treasure
+    </DisplayLink>
+    <DisplayLink
+      visiblePane='expenses'
+    >
+      Expenses
+    </DisplayLink>
+    <DisplayLink
+      visiblePane='pois'
+    >
+      POI/New Hexes
+    </DisplayLink>
+  </p>
 )
 
 export default Header;

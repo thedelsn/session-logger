@@ -61,6 +61,8 @@ session log:
 
 TODO: figure out how to set focus when you change the pane
 TODO: implement POI
+TODO: implement new hexes
+TODO: implement expenses in log
 
 maybe: implement details
 maybe: implement rations
