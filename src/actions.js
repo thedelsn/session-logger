@@ -31,7 +31,7 @@ export const adjustPotions = (expenseId, plusOrMinus) => ({
   plusOrMinus,
 });
 
-export const setSelectedInfo = (fieldId, input) => ({
+export const setSelectedItemInfo = (fieldId, input) => ({
   type: 'SET_SELECTED_INFO',
   [fieldId]: input
 });

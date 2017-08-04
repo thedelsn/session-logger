@@ -62,7 +62,8 @@ body {
   width: 90%; 
   float: left;
   clear: both;
-  max-width: 400px; }
+  max-width: 400px;
+  height: 40em; }
 
 @media screen and (max-width: 550px) {
   button span {

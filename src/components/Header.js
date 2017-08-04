@@ -1,7 +1,6 @@
 import React from 'react';
 import {setVisiblePane, setSelectedToItem} from '../actions';
 import {connect} from 'react-redux';
-//import fieldTypes from '../definitions';
 
 const Link = ({
   active,
@@ -27,15 +26,14 @@ const Link = ({
 
 //DisplayLink
 const mapStateToProps = (state, ownProps) => ({
-  active: ownProps.visiblePane ===
-  state.visiblePane,
-  toSelect: (state.data[ownProps.visiblePane] ?
-    state.data[ownProps.visiblePane][0] || {itemType: ownProps.visiblePane} : 
-    {itemType: ownProps.visiblePane})
+  active: ownProps.itemType ===
+  state.selectedItem.itemType,
+  toSelect: (state.data[ownProps.itemType] ?
+    state.data[ownProps.itemType][0] || {itemType: ownProps.itemType} : 
+    {itemType: ownProps.itemType})
 });
 const mapDispatchToProps = (dispatch, ownProps) => ({
   onClick: (toSelect) => {
-    dispatch(setVisiblePane(ownProps.visiblePane));
     dispatch(setSelectedToItem(toSelect));
   }
 });
@@ -47,27 +45,27 @@ const DisplayLink = connect(
 const Header = () => (
   <p className='header'>
     <DisplayLink
-      visiblePane='characters'
+      itemType='characters'
     >
       Characters
     </DisplayLink>
     <DisplayLink
-      visiblePane='monsters'
+      itemType='monsters'
     >
       Encounters
     </DisplayLink>
     <DisplayLink
-      visiblePane='treasures'
+      itemType='treasures'
     >
       Treasure
     </DisplayLink>
     <DisplayLink
-      visiblePane='expenses'
+      itemType='expenses'
     >
       Expenses
     </DisplayLink>
     <DisplayLink
-      visiblePane='pois'
+      itemType='pois'
     >
       POI/New Hexes
     </DisplayLink>

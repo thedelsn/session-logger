@@ -52,6 +52,9 @@ const generateLog = (state) => {
           break;
         case 'hex':
           gpTotal += 25 * p.distanceFromWall;
+          break;
+        default:
+          break;
       }
     }
     return gpTotal;
@@ -287,11 +290,63 @@ const generateLog = (state) => {
     }
     return output + '\n';
   }
-  //TODO
   const poiSection = () => {
-    return 'ADD POI SECTION\n\n'
+    const describePoi = (p) => {
+      switch (p.poiType) {
+        case 'poi':
+          return ( 
+            (p.poiName || '[Name]') +
+            ', in hex ' +
+            (p.hexNumber || '[hex]') +
+            ' (' +
+            (100 + p.distanceFromWall * 25) +
+            ' gp)\n' +
+            (p.poiDescription ?
+             '- ' + p.poiDescription + '\n' :
+             ''
+            )
+          );
+        case 'mpoi':
+          return (
+            (p.poiName || '[Name]') +
+            ', in hex ' +
+            (p.hexNumber || '[hex]') +
+            (p.poiDescription ?
+             '- ' + p.poiDescription + '\n' :
+             ''
+            )
+          );
+        case 'hex':
+          return (
+            (p.hexNumber || '[hex]') +
+            ' (' +
+            (p.distanceFromWall * 25) +
+            ' gp) \n'
+          );
+        default:
+          return '';
+      }
+    }
+    let outputSections = {poi: '', mpoi: '', hex: ''}
+    for (const p of pois) {
+      outputSections[p.poiType] += describePoi(p);
+    }
+    return( 
+      (outputSections.poi ?
+        ('*Points of Interest*\n' + outputSections.poi + '\n') :
+        ''
+      ) +
+      (outputSections.mpoi ?
+        ('*Minor Points of Interest*\n' + outputSections.mpoi + '\n') :
+        ''
+      ) +
+      (outputSections.hex ?
+        ('*New Hexes*\n' + outputSections.hex + '\n') :
+        ''
+      ) +
+      '\n'
+    );
   };
-  //TODO
   const expenseSection = () => {
     return 'ADD EXPENSES SECTION\n\n'
   };
@@ -315,11 +370,8 @@ const generateLog = (state) => {
 
 const LogOutput = ({state}) => {
   return (
-    //TODO: delete the rows and columns and format size w CSS 
     <textarea
       className='output'
-      rows='30'
-      cols='60'
       value={generateLog(state)}
       readOnly='true'
       onClick={(e) => e.target.select()}

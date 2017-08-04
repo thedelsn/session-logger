@@ -2,7 +2,7 @@ import React from 'react';
 
 import {setSelectedToItem, setInfo} from '../actions';
 import fieldTypes from '../definitions';
-import InputFields from '../components/InputFields';
+import InputFields from './inputPane/InputFields';
 import ItemList from './ItemList';
 
 const ItemPane = ({
@@ -39,7 +39,7 @@ const DisplayItemPane = ({
 }) => {
   return (
     <ItemPane
-      selectedItem= {state.selectedItem}
+      selectedItem={state.selectedItem}
       items={state.data[itemType]}
       itemType={itemType}
       itemLabel={itemLabel}

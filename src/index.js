@@ -4,14 +4,10 @@ import {createStore} from 'redux';
 import {Provider} from 'react-redux';
 
 import sessionLoggerApp from './reducers';
-//import InputFieldsPane from './components/InputFieldsPane';
-//import fieldTypes from './definitions';
-//import AddItem from './components/AddItem';
-//import DeleteItem from './components/DeleteItem';
 import LogOutput from './components/LogOutput'
 import Header from './components/Header';
-import DisplayItemPane from './components/ItemPane';
-
+import ItemPane from './components/ItemPane';
+import ExportPane from './components/ImportExportPane';
 
 import populateInitialStore from './populateInitialStore'
 
@@ -25,8 +21,6 @@ import populateInitialStore from './populateInitialStore'
 
 const store = createStore(sessionLoggerApp);
 
-populateInitialStore(store);
-
 const SessionLoggerApp = () => {
   const state = store.getState();
   return (
@@ -34,8 +28,8 @@ const SessionLoggerApp = () => {
       <div className='test'>
       <Header />
       
-      <DisplayItemPane
-        itemType={state.visiblePane}
+      <ItemPane
+        itemType={state.selectedItem.itemType}
         itemLabel='Item'
         state={state}
         dispatch={(action) => {store.dispatch(action)}}
@@ -44,6 +38,7 @@ const SessionLoggerApp = () => {
       <LogOutput
         state={state}
       />
+      <ExportPane />
     </div>
   );
 }
@@ -51,12 +46,15 @@ const SessionLoggerApp = () => {
 const render = () => {
   //add this to provider for testing {...store.getState()}
   ReactDOM.render(
-    <Provider store={store}>
+    <Provider store={store} {...store.getState()}>
       <SessionLoggerApp />
     </Provider>,
     document.getElementById('root')
   );
 };
+
+
+populateInitialStore(store);
 
 store.subscribe(render);
 render();

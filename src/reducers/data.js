@@ -105,6 +105,9 @@ const data = (
     pois: [],
   }, 
   action) => {
+  if (action.type==='IMPORT_DATA') {
+    return JSON.parse(action.toImport);
+  }
   if (action.itemType) {
     let updates={};
     updates[action.itemType] = items(state[action.itemType], action);
