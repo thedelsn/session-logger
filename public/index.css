@@ -7,17 +7,15 @@ body {
 /*HEADER*/
 .headerLink {
   margin: 0;
-  border: 1px solid lightgrey;
+  border: 2px solid lightgrey;
   background: lightgrey;
   color: black;
-  padding: .5em; }
+  padding: .5em; 
+  font-size: .75em;}
 
-.header {
-   
-}
 
 .header .selected {
-  border: 1px solid lightgrey;
+  border: 2px solid lightgrey;
   background: white; }
 
 /*ITEM PANE*/
@@ -33,7 +31,7 @@ body {
 
 .addButton, .deleteButton {
   border: 1px solid grey;
-  margin: .0625em; }
+  margin: 0 1em 0 0; }
 
 .inputFields {
   float: left; }
@@ -64,9 +62,16 @@ body {
   width: 90%; 
   float: left;
   clear: both;
-  max-width: 400px;}
+  max-width: 400px; }
 
 @media screen and (max-width: 550px) {
+  button span {
+    display: none;  }
+  .headerLink {
+    font-size: .6em;
+    border: 1px solid lightgrey;  }
+  .header .selected {
+    border: 1px solid lightgrey;  }
   .inputFields {
     font-size: .75em; } }
 

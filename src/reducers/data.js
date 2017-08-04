@@ -1,4 +1,4 @@
-import {omit} from 'underscore';
+import {omit} from 'lodash';
 
 export const setInfo = (state, action) => {
   let toUpdate = Object.keys(omit(action,'type'));

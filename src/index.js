@@ -49,9 +49,9 @@ const SessionLoggerApp = () => {
 }
 
 const render = () => {
-  //TODO: remove spread over store once I'm done testing!!
+  //add this to provider for testing {...store.getState()}
   ReactDOM.render(
-    <Provider store={store} {...store.getState()}>
+    <Provider store={store}>
       <SessionLoggerApp />
     </Provider>,
     document.getElementById('root')

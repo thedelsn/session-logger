@@ -58,12 +58,12 @@ const InputFields = ({
         itemType={fields[0].itemType}
         toFocusId={fields[0].id}
       >
-        Add Item
+        New<span> Item</span>
       </AddItem>
       <DeleteItem
         selectedItem={selectedItem}
       >
-        Delete Item
+        Delete<span> Item</span>
       </DeleteItem>
     </div>
     <PrependInputFields
