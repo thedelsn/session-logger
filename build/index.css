@@ -1,0 +1,78 @@
+/*  Still working on formatting, a lot of it 
+is broken / not complete at this point  */
+body {
+  font-family: sans-serif; 
+}
+
+/*HEADER*/
+.headerLink {
+  margin: 0;
+  border: 2px solid lightgrey;
+  background: lightgrey;
+  color: black;
+  padding: .5em; 
+  font-size: .75em;}
+
+
+.header .selected {
+  border: 2px solid lightgrey;
+  background: white; }
+
+/*ITEM PANE*/
+.inputFields {
+  border: 2px solid lightgrey;
+  padding: .5em;
+  width: 45%;
+  max-width: 300px;
+  display: inline-block; }
+
+.addDeleteButtons {
+  margin: 0 0 .75em 0; }
+
+.addButton, .deleteButton {
+  border: 1px solid grey;
+  margin: 0 1em 0 0; }
+
+.inputFields {
+  float: left; }
+
+.inputField {
+  float: left;
+  width: 100%; }
+
+.input {
+  float: right;
+  width: 40%; }
+
+.itemList {
+  min-width: 300px;
+  width: 30%;
+  font-size: .9em;
+  font-family: sans-serif;
+  list-style: circle;
+  display: inline-block;
+  position: relative; }
+
+/*OUTPUT PANE*/
+.output {
+  margin: 1em 0em;
+  padding: .25em .5em;
+  font-family: times, serif;
+  font-size: .9em;
+  width: 90%; 
+  float: left;
+  clear: both;
+  max-width: 400px; }
+
+@media screen and (max-width: 550px) {
+  button span {
+    display: none;  }
+  .headerLink {
+    font-size: .6em;
+    border: 1px solid lightgrey;  }
+  .header .selected {
+    border: 1px solid lightgrey;  }
+  .inputFields {
+    font-size: .75em; } }
+
+/*# sourceMappingURL=index.css.map */
