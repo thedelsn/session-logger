@@ -1,19 +1,9 @@
 
-fix it so an exported log includes the date
 add brief instructions
-add "are you sure you want to close this window"
-populate blank poi
 hitting enter gets you a new entry
 re-order log sections
 days out and rations
 better highlighting for selected item
-
-
-formatting issues
-	remove LMF earned if expenses = gp and no items claimed
-	skip logging of blank items
-	no space between LMF earned and *XP*
-
 
 -----
 

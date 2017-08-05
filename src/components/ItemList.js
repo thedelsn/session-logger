@@ -105,13 +105,12 @@ const Item = ({
   <li
     key={item.id}
     onClick={onClick}
-    style={{
-      textDecoration:
-        (selectedItem.id === item.id && 
-          selectedItem.itemType === item.itemType) ?
-        'underline' :
-        'none'
-    }}
+    className=
+      {(selectedItem.id === item.id && 
+        selectedItem.itemType === item.itemType) ?
+        'item isSelected' :
+        'item isNotSelected'
+      }
   >
     {itemText(item)}
   </li>

@@ -10,7 +10,7 @@ const generateLog = (state) => {
   const pois = state.data.pois;
   const details = state.data.details;
 
-  const listToOutputText = (prefix, itemNames) => {
+  const listToOutputText = (prefix, itemNames, suffix) => {
     let output = '';
     if (itemNames.length > 0) {
       output += prefix;
@@ -28,6 +28,7 @@ const generateLog = (state) => {
             break;
         }
       }
+      output+= suffix;
     }
     return output
   }
@@ -106,6 +107,10 @@ const generateLog = (state) => {
     let lmfEarned=0;
     let lmfClaimed=[];
 
+    let typicalNotDonating=[];
+    let typicalDonating=[];
+    let notTypical='';
+
     const gpTotal = calculateNetGp();
 
     for (const e of expenses) {
@@ -117,7 +122,7 @@ const generateLog = (state) => {
     const gpPerPerson=gpTotal/characters.length
 
     for (const c of characters) {
-      let isTypical=true;
+      let isTypical=(!c.gpAdjust);
       let treasureClaimed = [];
       let goldEarned=gpPerPerson+c.gpAdjust;
       let goldSpent=0;
@@ -135,23 +140,44 @@ const generateLog = (state) => {
         }
       }
 
-      output += (c.charName || '[Name]') + ' earned '
-      if (c.isDonating && gpTotal>0) {
-        lmfEarned += goldEarned/6;
-        output += 
-          Math.round(goldEarned*5/6 - goldSpent) +
-          ' gp (donating)'
-        ;
+      if (isTypical) {
+        c.isDonating ?
+        typicalDonating.push(c.charName || '[Name]') :
+        typicalNotDonating.push(c.charName || '[Name]')
       }
       else {
-        output +=
-          Math.round(goldEarned - goldSpent) +
-          ' gp'
-        ;
-      }
-      output += listToOutputText(', ', treasureClaimed);
-      output += '\n';
+        let cOutput = (c.charName || '[Name]') + ' earned ';
+        if (c.isDonating && gpTotal>0) {
+          lmfEarned += goldEarned/6;
+          cOutput += 
+            Math.round(goldEarned*5/6 - goldSpent) +
+            ' gp (donating)'
+          ;
+        }
+        else {
+          cOutput +=
+            Math.round(goldEarned - goldSpent) +
+            ' gp'
+          ;
+        }
+        cOutput += listToOutputText(', bought ', treasureClaimed,'');
+        cOutput += '\n';
+        notTypical += cOutput;
+      }      
     }
+    output+= listToOutputText('',typicalDonating,
+      (
+        ' earned ' + 
+        (gpPerPerson > 0 ? Math.round(gpPerPerson*5/6) : Math.round(gpPerPerson)) +
+        ' gp (donating)\n'
+      )
+    );
+    output += listToOutputText('',typicalNotDonating,
+      (' earned ' + Math.round(gpPerPerson) + ' gp\n')
+    );
+    output += notTypical;
+
+    //LMF EARNED
     for (const t of treasures) {
       if (t.treasureClaimedBy === -1) {
         lmfEarned -= t.valuePer*t.treasureNum;
@@ -168,12 +194,12 @@ const generateLog = (state) => {
         '\nLMFfAG earned ' +
         Math.round(lmfEarned) +
         ' gp' +
-        listToOutputText(', ', lmfClaimed) +
+        listToOutputText(', ', lmfClaimed,'') +
         '\n\n'
       ;
     } else {
       output +=
-        listToOutputText('\nLMFfAG claimed ', lmfClaimed) +
+        listToOutputText('\nLMFfAG claimed ', lmfClaimed,'') +
         '\n'
       ;
     }

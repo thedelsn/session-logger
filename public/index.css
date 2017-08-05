@@ -30,6 +30,7 @@ body {
   margin: 0 0 .75em 0; }
 
 .addButton, .deleteButton {
+  background: lightgrey;
   border: 1px solid grey;
   margin: 0 1em 0 0; }
 
@@ -53,6 +54,14 @@ body {
   list-style: circle;
   display: inline-block;
   position: relative; }
+
+.item {
+  padding: .25em;
+}
+
+.isSelected {
+  background: rgba(255,255,0,25%);
+}
 
 /*OUTPUT PANE*/
 .logOutputLabel {

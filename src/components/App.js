@@ -12,7 +12,6 @@ const SessionLoggerApp = ({
 }) => {
   return (
     <div>
-      <div className='test'>
       <Header />
       
       <ItemPane
@@ -21,7 +20,6 @@ const SessionLoggerApp = ({
         state={state}
         dispatch={(action) => {dispatch(action)}}
       />
-      </div>
       <span className='logOutputLabel'>Log Output</span>
       <LogOutput
         state={state}
