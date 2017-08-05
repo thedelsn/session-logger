@@ -10,7 +10,8 @@ const AddItem = ({
 }) => (
   <button 
     className= 'addButton'
-    onClick={() => {
+    onMouseDown={(event) => {
+      event.preventDefault();
       const action = addItem(itemType);
       dispatch(action);
       dispatch(setSelectedToItem({itemType: action.itemType, id: action.id}))

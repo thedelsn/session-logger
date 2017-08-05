@@ -4,10 +4,7 @@ import {createStore} from 'redux';
 import {Provider} from 'react-redux';
 
 import sessionLoggerApp from './reducers';
-import LogOutput from './components/LogOutput'
-import Header from './components/Header';
-import ItemPane from './components/ItemPane';
-import ExportPane from './components/ImportExportPane';
+import App from './components/App'
 
 import populateInitialStore from './populateInitialStore'
 
@@ -21,33 +18,11 @@ import populateInitialStore from './populateInitialStore'
 
 const store = createStore(sessionLoggerApp);
 
-const SessionLoggerApp = () => {
-  const state = store.getState();
-  return (
-    <div>
-      <div className='test'>
-      <Header />
-      
-      <ItemPane
-        itemType={state.selectedItem.itemType}
-        itemLabel='Item'
-        state={state}
-        dispatch={(action) => {store.dispatch(action)}}
-      />
-      </div>
-      <LogOutput
-        state={state}
-      />
-      <ExportPane />
-    </div>
-  );
-}
-
 const render = () => {
-  //add this to provider for testing {...store.getState()}
+  //add this to provider for testing: {...store.getState()}
   ReactDOM.render(
     <Provider store={store} {...store.getState()}>
-      <SessionLoggerApp />
+      <App />
     </Provider>,
     document.getElementById('root')
   );

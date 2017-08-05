@@ -1,5 +1,5 @@
 import React from 'react';
-import {setVisiblePane, setSelectedToItem} from '../actions';
+import {setSelectedToItem} from '../actions';
 import {connect} from 'react-redux';
 
 const Link = ({
@@ -14,8 +14,8 @@ const Link = ({
   return(
     <button
       className='headerLink notSelected'
-      onClick={e => {
-        e.preventDefault();
+      onMouseDown={event => {
+        event.preventDefault();
         onClick(toSelect);
       }}
     >

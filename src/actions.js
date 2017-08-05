@@ -39,9 +39,4 @@ export const setSelectedItemInfo = (fieldId, input) => ({
 export const setSelectedToItem = item => ({
   type: 'SET_SELECTED_ITEM',
   ...item
-})
-
-export const setVisiblePane = (visiblePane) => ({
-  type: 'SET_VISIBLE_PANE',
-  visiblePane
 });

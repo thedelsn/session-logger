@@ -87,7 +87,7 @@ const data = (
     expenses: [
       {
         itemType: 'expenses',
-        expenseName: 'Potions', 
+        expenseName: 'Potions (for low level chars)', 
         id: 0, 
         valuePer: 50, 
         expenseNum: 0, 

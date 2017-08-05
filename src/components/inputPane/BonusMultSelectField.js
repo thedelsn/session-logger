@@ -18,8 +18,8 @@ const BonusMultSelectField = ({
     )}
   >
     <option value='1'>Normal</option>
-    <option value='2'>Regional (1/2xp)</option>
-    <option value='4'>Special (full xp)</option>
+    <option value='2'>Local (1/2xp)</option>
+    <option value='4'>Regional (full xp)</option>
   </select>
 );
 

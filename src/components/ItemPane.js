@@ -1,4 +1,5 @@
 import React from 'react';
+import {connect} from 'react-redux';
 
 import {setSelectedToItem, setInfo} from '../actions';
 import fieldTypes from '../definitions';
@@ -31,6 +32,24 @@ const ItemPane = ({
   </div>
 );
 
+const mapStateToProps = (state, ownProps) => ({
+  selectedItem: state.selectedItem,
+  items: state.data[ownProps.itemType],
+  itemType: ownProps.itemType,
+  //itemLabel: ownProps.itemLabel
+});
+const mapDispatchToProps = (dispatch) => ({
+  onItemClick: ((item) => dispatch(setSelectedToItem(item))),
+  onInputFieldChange: (
+    input, 
+    fieldId, 
+    selectedItem
+  ) => dispatch(
+    setInfo(selectedItem, fieldId, input)
+  ),
+})
+
+/*
 const DisplayItemPane = ({
   itemType,
   itemLabel,
@@ -57,7 +76,7 @@ const DisplayItemPane = ({
       }}
     />
   );
-}
+}*/
 
 
-export default DisplayItemPane;
+export default connect(mapStateToProps,mapDispatchToProps)(ItemPane);

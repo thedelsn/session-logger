@@ -31,33 +31,17 @@ const generateLog = (state) => {
     return output
   }
 
-  const calculateGpTotal = () => {
-    let gpTotal=0;
-
-    for (const t of treasures) {
-      gpTotal += t.valuePer * t.treasureNum
+  const calculatePoiValue = (poi) => {
+    switch (poi.poiType) {
+      case 'poi':
+        return 100 + 25*poi.distanceFromWall;
+      case 'mpoi':
+        return 50;
+      case 'hex':
+        return 25 * poi.distanceFromWall;
+      default:
+        return 0;
     }
-    for (const e of expenses) {
-      e.lmfExpense ?
-      null :
-      gpTotal -= e.valuePer * e.expenseNum
-    }
-    for (const p of pois) {
-      switch (p.poiType) {
-        case 'poi':
-          gpTotal += 100 + 25*p.distanceFromWall;
-          break;
-        case 'mpoi':
-          gpTotal += 50;
-          break;
-        case 'hex':
-          gpTotal += 25 * p.distanceFromWall;
-          break;
-        default:
-          break;
-      }
-    }
-    return gpTotal;
   }
 
   const prefixSection = () => {
@@ -106,11 +90,28 @@ const generateLog = (state) => {
     }
   }
   const gpSection = () => {
+    const calculateNetGp = () => {
+      let gpTotal=0;
+
+      for (const t of treasures) {
+        gpTotal += t.valuePer * t.treasureNum
+      }
+      for (const e of expenses) {
+        e.lmfExpense ?
+        null :
+        gpTotal -= e.valuePer * e.expenseNum
+      }
+      for (const p of pois) {
+        gpTotal += calculatePoiValue(p);
+      }
+
+      return gpTotal;
+    }
     let output= '*Gold and Treasure*\n';
     let lmfEarned=0;
     let lmfClaimed=[];
 
-    const gpTotal = calculateGpTotal();
+    const gpTotal = calculateNetGp();
 
     for (const e of expenses) {
       e.lmfExpense ?
@@ -199,6 +200,9 @@ const generateLog = (state) => {
         totalXp += t.valuePer * t.treasureNum
       ;
     }
+    for (const p of pois) {
+      totalXp += calculatePoiValue(p);
+    }
     for (const c of characters) {
       c.xpAdjust ?
         output += 
@@ -280,7 +284,9 @@ const generateLog = (state) => {
       for (const t of magicItems) {
         output += describeTreasure(t);
       }
-      output += '\n';
+      if (mundaneItems.length > 0) {
+        output += '\n';
+      }
     }
     if (mundaneItems.length > 0) {
       output += '_Nonmagical Items:_\n';
@@ -288,7 +294,7 @@ const generateLog = (state) => {
         output += describeTreasure(t);
       }
     }
-    return output + '\n';
+    return output;
   }
   const poiSection = () => {
     const describePoi = (p) => {
@@ -348,11 +354,93 @@ const generateLog = (state) => {
     );
   };
   const expenseSection = () => {
-    return 'ADD EXPENSES SECTION\n\n'
+    const describeExpense = (e) => {
+      if (e.expenseNum === 0) {
+        return '';
+      }
+
+      let output='';
+      output += e.expenseName;
+      if (e.expenseNum > 1) {
+        output += 
+          ' x' +
+          e.expenseNum
+        ;
+      }
+      output += 
+        ' (' +
+        e.expenseNum*e.valuePer +
+        ' gp'
+      ;
+      e.expenseNum > 1 ?
+        output+= ' total)' :
+        output+= ')'
+      ;
+      e.lmfExpense ?
+        output+= ' - paid by LMFfMG' :
+        null
+      if (e.expenseDescription) {
+        output += '\n-' +
+          e.expenseDescription
+        ;
+      }
+
+      return output + '\n';
+    };
+
+    let output='';
+    const partyExpenses=expenses.filter((e)=>!e.lmfExpense);
+    const lmfExpenses=expenses.filter((e)=>e.lmfExpense);
+    if (partyExpenses.length > 0) {
+      for (const e of partyExpenses) {
+        output += describeExpense(e);
+      }
+    }
+    if (lmfExpenses.length > 0) {
+      for (const e of lmfExpenses) {
+        output += describeExpense(e);
+      }
+    }
+    if (output === '') {
+      return '';
+    }
+    
+    return '*Expenses*\n' + output + '\n'
   };
-  //TODO
+  
   const encounterSection = () => {
-    return 'ADD ENCOUNTER SECTION'
+    let output=''
+    for (const m of monsters) {
+      if (m.numKilled===0 && m.numFled===0) {
+        break;
+      }
+
+      output += m.monsterName
+      switch (m.bonusMult) {
+        case '2':
+          output+= ' (local power)';
+          break;
+        case '4':
+          output += ' (regional power)';
+          break;
+        default:
+          break;
+      }
+      output += ', '
+      if (m.numKilled) {
+        output += m.numKilled + ' killed'
+      }
+      if (m.numKilled && m.numFled) {
+        output += ', '
+      }
+      if (m.numFled) {
+        output += m.numFled + ' fled/bypassed'
+      }
+    }
+    if (output === '') {
+      return output;
+    }
+    return '*Encounters*\n' +output + '\n';
   };
 
   const log= 

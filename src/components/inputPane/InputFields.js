@@ -61,6 +61,7 @@ const InputFields = ({
         New<span> Item</span>
       </AddItem>
       <DeleteItem
+        itemType={selectedItem.itemType}
         selectedItem={selectedItem}
       >
         Delete<span> Item</span>
