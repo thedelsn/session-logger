@@ -62,7 +62,15 @@ body {
   width: 90%; 
   float: left;
   clear: both;
-  max-width: 400px; }
+  max-width: 400px;
+  height: 40em; }
+
+/*IMPORT EXPORT PANE*/
+.importExportPane {
+  display: block;
+  clear: both;
+}
+
 
 @media screen and (max-width: 550px) {
   button span {

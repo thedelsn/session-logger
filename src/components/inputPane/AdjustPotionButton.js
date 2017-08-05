@@ -3,8 +3,9 @@ import {connect} from 'react-redux';
 
 import {adjustPotions} from '../../actions';
 
-const AdjustPotionButton = ({paidBy, plusOrMinus, onButtonClick}) => (
+const AdjustPotionButton = ({paidBy, plusOrMinus, disabled, onButtonClick}) => (
   <button 
+    disabled={disabled}
     onClick={()=>onButtonClick(
       paidBy === 'lmf'?
       0 :
@@ -21,6 +22,7 @@ const AdjustPotionButton = ({paidBy, plusOrMinus, onButtonClick}) => (
 const mapStateToProps = (state, ownProps) => ({
   paidBy: ownProps.paidBy,
   plusOrMinus: ownProps.plusOrMinus,
+  disabled: ownProps.disabled,
 })
 const mapDispatchToProps = (dispatch, ownProps) => ({
   onButtonClick: (potionsId, plusOrMinus) => {

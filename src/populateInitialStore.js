@@ -1,10 +1,12 @@
-import {addItem, setSelectedToItem} from './actions';
+import {addItem, setSelectedToItem, setInfo} from './actions';
 
 const populateInitialStore = (store) => {
 	store.dispatch(addItem('characters'));
 	store.dispatch(addItem('monsters'));
 	store.dispatch(addItem('treasures'));
 	store.dispatch(addItem('expenses'));
+	store.dispatch(addItem('pois'));
+	store.dispatch(setInfo({id:0, itemType: 'details'}, 'daysOut', 5))
 	store.dispatch({
 		type: 'SET_INFO',
 		itemType: 'expenses',

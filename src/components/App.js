@@ -22,9 +22,11 @@ const SessionLoggerApp = ({
         dispatch={(action) => {dispatch(action)}}
       />
       </div>
+      <span className='logOutputLabel'>Log Output</span>
       <LogOutput
         state={state}
-      /><div className='importExportPane'>
+      />
+      <div className='importExportPane'>
       Import / Export session data
       <ImportExportPane /></div>
     </div>

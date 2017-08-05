@@ -125,8 +125,13 @@ export const fieldTypes = {
       itemType: 'treasures',
       display: 'Magic Item?',
       type: 'checkbox'
+    },
+    //treasureClaimedBy display is implemented separately
+    {
+      id: 'treasureClaimedBy',
+      itemType: 'treasures',
+      display: 'DO_NOT_DISPLAY',
     }
-    //treasureClaimedBy is implemented separately
   ],
   monsters: [
     {
@@ -213,6 +218,26 @@ export const fieldTypes = {
       type: 'number',
     },
     //poiType is implemented separately
+  ],
+  details: [
+    {
+      id: 'date',
+      itemType: 'details',
+      display: 'Date',
+      type: 'text',
+    },
+    {
+      id: 'daysOut',
+      itemType: 'details',
+      display: 'Days Out',
+      type: 'number',
+    },
+    {
+      id: 'adjustRations',
+      itemType: 'details',
+      display: 'Adjust Rations',
+      type: 'number',
+    },
   ],
 }
 

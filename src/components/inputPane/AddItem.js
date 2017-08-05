@@ -13,8 +13,15 @@ const AddItem = ({
     onMouseDown={(event) => {
       event.preventDefault();
       const action = addItem(itemType);
-      dispatch(action);
-      dispatch(setSelectedToItem({itemType: action.itemType, id: action.id}))
+      dispatch(action)
+      //TODO: fix this it's awful form
+      dispatch(setSelectedToItem({
+        itemType: action.itemType, 
+        id: action.id,
+        treasureClaimedBy: 'none',
+        poiType: 'poi',
+        bonusMult: 1,
+      }))
       document.getElementById(toFocusId).focus();
     }}
   >

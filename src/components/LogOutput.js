@@ -8,6 +8,7 @@ const generateLog = (state) => {
   const monsters = state.data.monsters;
   const expenses = state.data.expenses;
   const pois = state.data.pois;
+  const details = state.data.details;
 
   const listToOutputText = (prefix, itemNames) => {
     let output = '';
@@ -45,37 +46,30 @@ const generateLog = (state) => {
   }
 
   const prefixSection = () => {
-    let today = new Date();
-    return (
-      months[today.getMonth()] +
-      ' ' + 
-      today.getDate() +
-      ', ' +
-      today.getFullYear() +
-      '\n\n'
-    );
+    return details.date + '\n\n';
   };
 
   const charactersSection = () => {
     let output = '*Characters* \n';
     for (const c of characters) {
       output += 
-        c.charName + 
+        (c.charName || '[Name]') + 
         ' (' + 
-        c.charClass + 
+        (c.charClass || '[Class]') + 
         ' ' + 
-        c.charLevel + 
+        (c.charLevel || '[Level]') + 
         ')\n';
     }
     return output + '\n';
   };
+
   const changesSection = () => {
     let output = '*Character Changes* \n';
     let areChanges = false;
     for (const c of characters) {
       if (c.charChanges) {
         output +=
-          c.charName +
+          (c.charName || '[Name]') +
           ' ' +
           c.charChanges +
           '\n';
@@ -107,6 +101,7 @@ const generateLog = (state) => {
 
       return gpTotal;
     }
+
     let output= '*Gold and Treasure*\n';
     let lmfEarned=0;
     let lmfClaimed=[];
@@ -122,15 +117,17 @@ const generateLog = (state) => {
     const gpPerPerson=gpTotal/characters.length
 
     for (const c of characters) {
+      let isTypical=true;
       let treasureClaimed = [];
       let goldEarned=gpPerPerson+c.gpAdjust;
       let goldSpent=0;
 
       for (const t of treasures) {
         if (t.treasureClaimedBy === c.id) {
+          isTypical=false;
           goldSpent += t.valuePer*t.treasureNum;
           treasureClaimed.push(
-          t.treasureName +
+          (t.treasureName || '[Name]') +
           (t.treasureNum > 1 ?
           '(x' + t.treasureNum + ')' :
           '')
@@ -138,7 +135,7 @@ const generateLog = (state) => {
         }
       }
 
-      output += c.charName + ' earned '
+      output += (c.charName || '[Name]') + ' earned '
       if (c.isDonating && gpTotal>0) {
         lmfEarned += goldEarned/6;
         output += 
@@ -159,7 +156,7 @@ const generateLog = (state) => {
       if (t.treasureClaimedBy === -1) {
         lmfEarned -= t.valuePer*t.treasureNum;
         lmfClaimed.push(
-          t.treasureName +
+          (t.treasureName  || '[Name]') +
           (t.treasureNum > 1 ?
           '(x' + t.treasureNum + ')' :
           '')
@@ -172,7 +169,7 @@ const generateLog = (state) => {
         Math.round(lmfEarned) +
         ' gp' +
         listToOutputText(', ', lmfClaimed) +
-        '\n'
+        '\n\n'
       ;
     } else {
       output +=
@@ -182,10 +179,12 @@ const generateLog = (state) => {
     }
     return output;
   };
+
   const xpSection = () => {
     let output = '*XP*\n';
     let unadjustedChars = [];
     let totalXp = 0;
+    let updateBonus=1.1;
     for (const m of monsters) {
       const xpPer = xpTable[m.cr] || 0;
       //monsters killed are worth 1/4 xp, fled are worth 1/8
@@ -206,10 +205,12 @@ const generateLog = (state) => {
     for (const c of characters) {
       c.xpAdjust ?
         output += 
-          c.charName +
+          (c.charName || '[Name]') +
           ' earned ' +
           Math.round(totalXp / characters.length + c.xpAdjust) +
-          ' xp\n'
+          ' xp (' +
+        Math.round((totalXp / characters.length + c.xpAdjust) * updateBonus) +
+        ' xp with sheet update)\n'
         :
         unadjustedChars.push(c)
       ;
@@ -219,32 +220,35 @@ const generateLog = (state) => {
         const c = unadjustedChars[i];
         switch (i) {
           case unadjustedChars.length-2:
-            output += c.charName + ' and ';
+            output += (c.charName  || '[Name]') + ' and ';
             break;
           case unadjustedChars.length-1:
-            output += c.charName;
+            output += (c.charName || '[Name]');
             break;
           default:
-            output += c.charName + ', ';
+            output += (c.charName || '[Name]') + ', ';
             break;
         }
       }
       output += 
         ' earned ' +
         Math.round(totalXp / characters.length) +
-        ' xp\n'
+        ' xp (' +
+        Math.round(totalXp / characters.length * updateBonus) +
+        ' xp with sheet update)\n'
       ;
     }
 
     return output + '\n';
   }
+
   const treasureSection = () => {
     const describeTreasure = (t) => {
       let output='';
       let claimedByChars = characters.filter(
             (c)=>c.id===t.treasureClaimedBy
           );
-      output += t.treasureName;
+      output += (t.treasureName  || '[Name]');
       if (t.treasureNum > 1) {
         output += 
           ' x' +
@@ -264,7 +268,7 @@ const generateLog = (state) => {
         output += ' - claimed by ';
         t.treasureClaimedBy === -1 ?
           output += 'the LMFfAG' :
-          output += claimedByChars[0].charName
+          output += (claimedByChars[0].charName  || '[Name]')
         ;
       }
       if (t.treasureDescription) {
@@ -277,9 +281,11 @@ const generateLog = (state) => {
     }
 
     let output='*Treasure Found*\n';
+    let isTreasure=false;
     const magicItems=treasures.filter((t)=>t.isMagicItem);
     const mundaneItems=treasures.filter((t)=>!t.isMagicItem);
     if (magicItems.length > 0) {
+      isTreasure=true;
       output += '_Magic Items:_\n';
       for (const t of magicItems) {
         output += describeTreasure(t);
@@ -289,13 +295,18 @@ const generateLog = (state) => {
       }
     }
     if (mundaneItems.length > 0) {
+      isTreasure=true;
       output += '_Nonmagical Items:_\n';
       for (const t of mundaneItems) {
         output += describeTreasure(t);
       }
     }
-    return output;
+    if (isTreasure) {
+      return output + '\n';
+    }
+    return '';
   }
+
   const poiSection = () => {
     const describePoi = (p) => {
       switch (p.poiType) {
@@ -316,7 +327,7 @@ const generateLog = (state) => {
           return (
             (p.poiName || '[Name]') +
             ', in hex ' +
-            (p.hexNumber || '[hex]') +
+            (p.hexNumber || '[hex]\n') +
             (p.poiDescription ?
              '- ' + p.poiDescription + '\n' :
              ''
@@ -324,6 +335,7 @@ const generateLog = (state) => {
           );
         case 'hex':
           return (
+            'Hex ' +
             (p.hexNumber || '[hex]') +
             ' (' +
             (p.distanceFromWall * 25) +
@@ -349,8 +361,7 @@ const generateLog = (state) => {
       (outputSections.hex ?
         ('*New Hexes*\n' + outputSections.hex + '\n') :
         ''
-      ) +
-      '\n'
+      )
     );
   };
   const expenseSection = () => {
@@ -409,13 +420,15 @@ const generateLog = (state) => {
   };
   
   const encounterSection = () => {
-    let output=''
+    let output='*Encounters*\n';
+    let areMonsters=false;
+
     for (const m of monsters) {
       if (m.numKilled===0 && m.numFled===0) {
         break;
       }
-
-      output += m.monsterName
+      areMonsters=true;
+      output += (m.monsterName || '[Name]')
       switch (m.bonusMult) {
         case '2':
           output+= ' (local power)';
@@ -437,10 +450,10 @@ const generateLog = (state) => {
         output += m.numFled + ' fled/bypassed'
       }
     }
-    if (output === '') {
-      return output;
+    if (areMonsters) {
+      return output + '\n';
     }
-    return '*Encounters*\n' +output + '\n';
+    return '';
   };
 
   const log= 

@@ -30,7 +30,7 @@ const mapStateToProps = (state) => {
         return itemList[1];
       }
     }
-    return {id: 0, itemType: state.selectedItem.itemType};
+    return {id: -1, itemType: state.selectedItem.itemType};
   };
 
   return {
@@ -40,6 +40,10 @@ const mapStateToProps = (state) => {
 };
 const mapDispatchToProps = (dispatch) => ({
   onClick: ((selectedItem, toSelect) => {
+    if (selectedItem.itemType==='expenses' &&
+     (selectedItem.id=== 0 || selectedItem.id === 1)) {
+      return;
+    }
     dispatch(deleteItem(selectedItem));
     dispatch(setSelectedToItem(toSelect));
   })

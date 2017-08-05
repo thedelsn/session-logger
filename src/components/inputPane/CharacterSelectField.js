@@ -6,6 +6,7 @@ import {setInfo, setSelectedItemInfo} from '../../actions';
 const CharacterSelectField = ({
   characters,
   id,
+  disabled,
   onFieldChange,
   selectedItem
 }) => (
@@ -13,6 +14,7 @@ const CharacterSelectField = ({
     className='input'
     name='selectCharacter'
     id={id}
+    disabled={disabled}
     value={selectedItem.treasureClaimedBy}
     onChange={(event) => (
       onFieldChange(selectedItem, event.target.value*1, 'treasureClaimedBy')
@@ -37,6 +39,7 @@ const mapStateToProps = (state, ownProps) => ({
   selectedItem: state.selectedItem,
   characters: state.data.characters,
   id: ownProps.id,
+  disabled: ownProps.disabled,
 });
 const mapDispatchToProps = (dispatch) => ({
   onFieldChange: ((selectedItem, input, fieldId) => {

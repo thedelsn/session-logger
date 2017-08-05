@@ -34,7 +34,8 @@ body {
   margin: 0 1em 0 0; }
 
 .inputFields {
-  float: left; }
+  float: left; 
+  margin-bottom: 1em;}
 
 .inputField {
   float: left;
@@ -54,22 +55,27 @@ body {
   position: relative; }
 
 /*OUTPUT PANE*/
+.logOutputLabel {
+  display: block;
+  clear: both; }
 .output {
-  margin: 1em 0em;
+  display: block;
+  clear: both;
   padding: .25em .5em;
   font-family: times, serif;
   font-size: .9em;
   width: 90%; 
-  float: left;
-  clear: both;
   max-width: 400px;
-  height: 40em; }
+  height: 40em;
+  margin-bottom: 1em; }
 
 /*IMPORT EXPORT PANE*/
 .importExportPane {
   display: block;
-  clear: both;
-}
+  clear: both; }
+
+[disabled] {
+  background: rgb(240,240,240); }
 
 
 @media screen and (max-width: 550px) {

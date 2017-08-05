@@ -1,4 +1,5 @@
 import {omit} from 'lodash';
+import {months} from '../definitions';
 
 export const setInfo = (state, action) => {
   let toUpdate = Object.keys(omit(action,'type'));
@@ -79,6 +80,7 @@ const items = (state=[], action) => {
   }
 };
 
+const today = new Date();
 const data = (
   state={
     characters: [],
@@ -103,17 +105,33 @@ const data = (
       },
     ],
     pois: [],
+    details: {
+      id: 0,
+      date: (
+        months[today.getMonth()] +
+        ' ' + 
+        today.getDate() +
+        ', ' +
+        today.getFullYear()
+      ),
+      daysOut: 1,
+      adjustRations: 0,
+    },
   }, 
   action) => {
   if (action.type==='IMPORT_DATA') {
     return JSON.parse(action.toImport);
   }
-  if (action.itemType) {
-    let updates={};
-    updates[action.itemType] = items(state[action.itemType], action);
+  if (action.itemType === 'details') {
     return {
       ...state,
-      ...updates
+      details: item(state.details, {...action, id: 0}),
+    }
+  }
+  if (action.itemType) {
+    return {
+      ...state,
+      [action.itemType]: items(state[action.itemType], action),
     };
   }
   return state;

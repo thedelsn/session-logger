@@ -1,7 +1,7 @@
 import {combineReducers} from 'redux';
 import data from './data';
 import selectedItem from './selectedItem';
-import importFieldInput from './importFieldInput'
+import importFieldInput from './importFieldInput';
 
 const sessionLoggerApp = combineReducers({
   data,

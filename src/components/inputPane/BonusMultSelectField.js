@@ -6,12 +6,14 @@ import {setInfo, setSelectedItemInfo} from '../../actions';
 const BonusMultSelectField = ({
   id,
   onFieldChange,
+  disabled,
   selectedItem
 }) => (
   <select
     className='input'
     name='selectCharacter'
     id={id}
+    disabled={disabled}
     value={selectedItem.bonusMult || '1'}
     onChange={(event) => (
       onFieldChange(selectedItem, event.target.value, 'bonusMult')
@@ -26,6 +28,7 @@ const BonusMultSelectField = ({
 const mapStateToProps = (state, ownProps) => ({
   selectedItem: state.selectedItem,
   id: ownProps.id,
+  disabled: ownProps.disabled,
 });
 const mapDispatchToProps = (dispatch) => ({
   onFieldChange: ((selectedItem, input, fieldId) => {
