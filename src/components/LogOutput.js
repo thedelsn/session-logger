@@ -1,5 +1,5 @@
 import React from 'react';
-import {xpTable, months} from '../definitions'
+import {xpTable} from '../definitions'
 
 const generateLog = (state) => {
 
@@ -46,24 +46,22 @@ const generateLog = (state) => {
     }
   }
 
+  const calculateMonsterXp = (m) => {
+    if (m.xpOverwrite) {
+        return m.xpOverwrite;
+      }
+    const xpPer = xpTable[m.cr] || 0;
+    //monsters killed are worth 1/4 xp, fled are worth 1/8
+    return ( 
+      xpPer * m.numKilled * 0.25 * m.bonusMult +
+      xpPer * m.numFled * 0.125
+    )
+  }
+
   const prefixSection = () => {
     return details.date + '\n\n';
   };
-
-  const charactersSection = () => {
-    let output = '*Characters* \n';
-    for (const c of characters) {
-      output += 
-        (c.charName || '[Name]') + 
-        ' (' + 
-        (c.charClass || '[Class]') + 
-        ' ' + 
-        (c.charLevel || '[Level]') + 
-        ')\n';
-    }
-    return output + '\n';
-  };
-
+  
   const changesSection = () => {
     let output = '*Character Changes* \n';
     let areChanges = false;
@@ -84,6 +82,115 @@ const generateLog = (state) => {
       return '';
     }
   }
+
+  const charactersSection = () => {
+    let output = '*Characters* \n';
+    for (const c of characters) {
+      output += 
+        (c.charName || '[Name]') + 
+        ' (' + 
+        (c.charClass || '[Class]') + 
+        ' ' + 
+        (c.charLevel || '[Level]') + 
+        ')\n';
+    }
+    return output + '\n';
+  };
+
+  const encounterSection = () => {
+    let output='*Encounters*\n';
+    let areMonsters=false;
+
+    for (const m of monsters) {
+      if (m.numKilled===0 && m.numFled===0) {
+        break;
+      }
+      areMonsters=true;
+      output += '_' + (m.monsterName || '[Name]') + '_'
+      switch (m.bonusMult) {
+        case '2':
+          output+= ' (local power)';
+          break;
+        case '4':
+          output += ' (regional power)';
+          break;
+        default:
+          break;
+      }
+      output += ', '
+      if (m.numKilled) {
+        output += m.numKilled + ' killed'
+      }
+      if (m.numKilled && m.numFled) {
+        output += ', '
+      }
+      if (m.numFled) {
+        output += m.numFled + ' fled/bypassed'
+      }
+      output += ' (' + calculateMonsterXp(m) + ' xp)'
+      output += '\n'
+    }
+    if (areMonsters) {
+      return output + '\n';
+    }
+    return '';
+  };
+
+  const expenseSection = () => {
+    const describeExpense = (e) => {
+      if (e.expenseNum === 0) {
+        return '';
+      }
+
+      let output='';
+      output += e.expenseName;
+      if (e.expenseNum > 1) {
+        output += 
+          ' x' +
+          e.expenseNum
+        ;
+      }
+      output += 
+        ' (' +
+        e.expenseNum*e.valuePer +
+        ' gp'
+      ;
+      e.expenseNum > 1 ?
+        output+= ' total)' :
+        output+= ')'
+      ;
+      e.lmfExpense ?
+        output+= ' - paid by LMFfMG' :
+        null
+      if (e.expenseDescription) {
+        output += '\n-' +
+          e.expenseDescription
+        ;
+      }
+
+      return output + '\n';
+    };
+
+    let output='';
+    const partyExpenses=expenses.filter((e)=>!e.lmfExpense);
+    const lmfExpenses=expenses.filter((e)=>e.lmfExpense);
+    if (partyExpenses.length > 0) {
+      for (const e of partyExpenses) {
+        output += describeExpense(e);
+      }
+    }
+    if (lmfExpenses.length > 0) {
+      for (const e of lmfExpenses) {
+        output += describeExpense(e);
+      }
+    }
+    if (output === '') {
+      return '';
+    }
+    
+    return '*Expenses*\n' + output + '\n'
+  };
+
   const gpSection = () => {
     const calculateNetGp = () => {
       let gpTotal=0;
@@ -206,67 +313,63 @@ const generateLog = (state) => {
     return output;
   };
 
-  const xpSection = () => {
-    let output = '*XP*\n';
-    let unadjustedChars = [];
-    let totalXp = 0;
-    let updateBonus=1.1;
-    for (const m of monsters) {
-      const xpPer = xpTable[m.cr] || 0;
-      //monsters killed are worth 1/4 xp, fled are worth 1/8
-      totalXp += 
-        xpPer * m.numKilled * 0.25 * m.bonusMult +
-        xpPer * m.numFled * 0.125
-      ;
-    }
-    for (const t of treasures) {
-      t.isMagicItem ?
-        totalXp += t.valuePer * t.treasureNum * 0.5 :
-        totalXp += t.valuePer * t.treasureNum
-      ;
-    }
-    for (const p of pois) {
-      totalXp += calculatePoiValue(p);
-    }
-    for (const c of characters) {
-      c.xpAdjust ?
-        output += 
-          (c.charName || '[Name]') +
-          ' earned ' +
-          Math.round(totalXp / characters.length + c.xpAdjust) +
-          ' xp (' +
-        Math.round((totalXp / characters.length + c.xpAdjust) * updateBonus) +
-        ' xp with sheet update)\n'
-        :
-        unadjustedChars.push(c)
-      ;
-    }
-    if (unadjustedChars.length > 0) {
-      for (let i=0; i<unadjustedChars.length; i++) {
-        const c = unadjustedChars[i];
-        switch (i) {
-          case unadjustedChars.length-2:
-            output += (c.charName  || '[Name]') + ' and ';
-            break;
-          case unadjustedChars.length-1:
-            output += (c.charName || '[Name]');
-            break;
-          default:
-            output += (c.charName || '[Name]') + ', ';
-            break;
-        }
+  const poiSection = () => {
+    const describePoi = (p) => {
+      switch (p.poiType) {
+        case 'poi':
+          return ( 
+            (p.poiName || '[Name]') +
+            ', in hex ' +
+            (p.hexNumber || '[hex]') +
+            ' (' +
+            (100 + p.distanceFromWall * 25) +
+            ' gp)\n' +
+            (p.poiDescription ?
+             '- ' + p.poiDescription + '\n' :
+             ''
+            )
+          );
+        case 'mpoi':
+          return (
+            (p.poiName || '[Name]') +
+            ' in hex ' +
+            ((p.hexNumber + '\n') || '[hex]\n') +
+            (p.poiDescription ?
+             '- ' + p.poiDescription + '\n' :
+             ''
+            )
+          );
+        case 'hex':
+          return (
+            'Hex ' +
+            (p.hexNumber || '[hex]') +
+            ' (' +
+            (p.distanceFromWall * 25) +
+            ' gp) \n'
+          );
+        default:
+          return '';
       }
-      output += 
-        ' earned ' +
-        Math.round(totalXp / characters.length) +
-        ' xp (' +
-        Math.round(totalXp / characters.length * updateBonus) +
-        ' xp with sheet update)\n'
-      ;
     }
-
-    return output + '\n';
-  }
+    let outputSections = {poi: '', mpoi: '', hex: ''}
+    for (const p of pois) {
+      outputSections[p.poiType] += describePoi(p);
+    }
+    return( 
+      (outputSections.poi ?
+        ('*Points of Interest*\n' + outputSections.poi + '\n') :
+        ''
+      ) +
+      (outputSections.mpoi ?
+        ('*Minor Points of Interest*\n' + outputSections.mpoi + '\n') :
+        ''
+      ) +
+      (outputSections.hex ?
+        ('*New Hexes*\n' + outputSections.hex + '\n') :
+        ''
+      )
+    );
+  };
 
   const treasureSection = () => {
     const describeTreasure = (t) => {
@@ -333,154 +436,62 @@ const generateLog = (state) => {
     return '';
   }
 
-  const poiSection = () => {
-    const describePoi = (p) => {
-      switch (p.poiType) {
-        case 'poi':
-          return ( 
-            (p.poiName || '[Name]') +
-            ', in hex ' +
-            (p.hexNumber || '[hex]') +
-            ' (' +
-            (100 + p.distanceFromWall * 25) +
-            ' gp)\n' +
-            (p.poiDescription ?
-             '- ' + p.poiDescription + '\n' :
-             ''
-            )
-          );
-        case 'mpoi':
-          return (
-            (p.poiName || '[Name]') +
-            ', in hex ' +
-            (p.hexNumber || '[hex]\n') +
-            (p.poiDescription ?
-             '- ' + p.poiDescription + '\n' :
-             ''
-            )
-          );
-        case 'hex':
-          return (
-            'Hex ' +
-            (p.hexNumber || '[hex]') +
-            ' (' +
-            (p.distanceFromWall * 25) +
-            ' gp) \n'
-          );
-        default:
-          return '';
-      }
+  const xpSection = () => {
+    let output = '*XP*\n';
+    let unadjustedChars = [];
+    let totalXp = 0;
+    let updateBonus=1.1;
+    for (const m of monsters) {
+      totalXp += calculateMonsterXp(m);
     }
-    let outputSections = {poi: '', mpoi: '', hex: ''}
+    for (const t of treasures) {
+      t.isMagicItem ?
+        totalXp += t.valuePer * t.treasureNum * 0.5 :
+        totalXp += t.valuePer * t.treasureNum
+      ;
+    }
     for (const p of pois) {
-      outputSections[p.poiType] += describePoi(p);
+      totalXp += calculatePoiValue(p);
     }
-    return( 
-      (outputSections.poi ?
-        ('*Points of Interest*\n' + outputSections.poi + '\n') :
-        ''
-      ) +
-      (outputSections.mpoi ?
-        ('*Minor Points of Interest*\n' + outputSections.mpoi + '\n') :
-        ''
-      ) +
-      (outputSections.hex ?
-        ('*New Hexes*\n' + outputSections.hex + '\n') :
-        ''
-      )
-    );
-  };
-  const expenseSection = () => {
-    const describeExpense = (e) => {
-      if (e.expenseNum === 0) {
-        return '';
-      }
-
-      let output='';
-      output += e.expenseName;
-      if (e.expenseNum > 1) {
+    for (const c of characters) {
+      c.xpAdjust ?
         output += 
-          ' x' +
-          e.expenseNum
-        ;
+          (c.charName || '[Name]') +
+          ' earned ' +
+          Math.round(totalXp / characters.length + c.xpAdjust) +
+          ' xp (' +
+        Math.round((totalXp / characters.length + c.xpAdjust) * updateBonus) +
+        ' xp with sheet update)\n'
+        :
+        unadjustedChars.push(c)
+      ;
+    }
+    if (unadjustedChars.length > 0) {
+      for (let i=0; i<unadjustedChars.length; i++) {
+        const c = unadjustedChars[i];
+        switch (i) {
+          case unadjustedChars.length-2:
+            output += (c.charName  || '[Name]') + ' and ';
+            break;
+          case unadjustedChars.length-1:
+            output += (c.charName || '[Name]');
+            break;
+          default:
+            output += (c.charName || '[Name]') + ', ';
+            break;
+        }
       }
       output += 
-        ' (' +
-        e.expenseNum*e.valuePer +
-        ' gp'
+        ' earned ' +
+        Math.round(totalXp / characters.length) +
+        ' xp (' +
+        Math.round(totalXp / characters.length * updateBonus) +
+        ' xp with sheet update)\n'
       ;
-      e.expenseNum > 1 ?
-        output+= ' total)' :
-        output+= ')'
-      ;
-      e.lmfExpense ?
-        output+= ' - paid by LMFfMG' :
-        null
-      if (e.expenseDescription) {
-        output += '\n-' +
-          e.expenseDescription
-        ;
-      }
+    }
 
-      return output + '\n';
-    };
-
-    let output='';
-    const partyExpenses=expenses.filter((e)=>!e.lmfExpense);
-    const lmfExpenses=expenses.filter((e)=>e.lmfExpense);
-    if (partyExpenses.length > 0) {
-      for (const e of partyExpenses) {
-        output += describeExpense(e);
-      }
-    }
-    if (lmfExpenses.length > 0) {
-      for (const e of lmfExpenses) {
-        output += describeExpense(e);
-      }
-    }
-    if (output === '') {
-      return '';
-    }
-    
-    return '*Expenses*\n' + output + '\n'
-  };
-  
-  const encounterSection = () => {
-    let output='*Encounters*\n';
-    let areMonsters=false;
-
-    for (const m of monsters) {
-      if (m.numKilled===0 && m.numFled===0) {
-        break;
-      }
-      areMonsters=true;
-      output += (m.monsterName || '[Name]')
-      switch (m.bonusMult) {
-        case '2':
-          output+= ' (local power)';
-          break;
-        case '4':
-          output += ' (regional power)';
-          break;
-        default:
-          break;
-      }
-      output += ', '
-      if (m.numKilled) {
-        output += m.numKilled + ' killed'
-      }
-      if (m.numKilled && m.numFled) {
-        output += ', '
-      }
-      if (m.numFled) {
-        output += m.numFled + ' fled/bypassed'
-      }
-    }
-    if (areMonsters) {
-      return output + '\n';
-    }
-    return '';
-  };
+    return output + '\n';
+  }
 
   const log= 
     prefixSection() +

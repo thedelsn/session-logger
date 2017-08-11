@@ -27,13 +27,13 @@ const item = (state={}, action) => {
           newItem = {valuePer: 0, treasureNum: 1, treasureClaimedBy: 'none'};
           break;
         case 'monsters':
-          newItem = {cr: 0, numKilled: 0, numFled: 0, bonusMult: 1};
+          newItem = {cr: 0, numKilled: 0, numFled: 0, xpOverwrite: 0, bonusMult: 1};
           break;
         case 'expenses':
           newItem = {valuePer: 0, expenseNum: 1, lmfExpense: false};
           break;
         case 'pois':
-          newItem = {distanceFromWall: 1, poiType: 'poi'};
+          newItem = {distanceFromWall: 1, poiType: 'mpoi'};
           break;
         default:
           newItem = {};

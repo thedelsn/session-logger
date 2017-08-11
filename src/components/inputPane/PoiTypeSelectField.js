@@ -17,8 +17,8 @@ const PoiTypeSelectField = ({
       onFieldChange(selectedItem, event.target.value, 'poiType')
     )}
   >
-    <option value='poi'>Point of Interest</option>
     <option value='mpoi'>Minor Point of Interest</option>
+    <option value='poi'>Point of Interest</option>
     <option value='hex'>New Hex</option>
   </select>
 );

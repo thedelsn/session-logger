@@ -15,7 +15,7 @@ const CharacterSelectField = ({
     name='selectCharacter'
     id={id}
     disabled={disabled}
-    value={selectedItem.treasureClaimedBy}
+    value={selectedItem.treasureClaimedBy || 'none'}
     onChange={(event) => (
       onFieldChange(selectedItem, event.target.value*1, 'treasureClaimedBy')
     )}

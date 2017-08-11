@@ -42,7 +42,6 @@ const itemText = (item) => {
         {item.numFled}
         {' '} fled)
       </div>);
-    //TODO: finish this!
     case 'expenses':
       return(<div>
         {item.expenseName || '[Name]'}
@@ -119,18 +118,29 @@ const Item = ({
 const ItemList = ({
   items,
   onItemClick,
+  numCharacters,
   selectedItem
-}) => (
-  <ul className='itemList'>
-    {items.map(item => (
-      <Item
-        key= {item.id}
-        selectedItem= {selectedItem}
-        item= {item}
-        onClick= {() => onItemClick(item)}
-      />
-    ))}
-  </ul>
-);
+}) => {
+  if (selectedItem.itemType === 'details') {
+    return <ul className='itemList'>
+      <li>
+        Rations used: {' '}
+        {selectedItem.daysOut*numCharacters+selectedItem.adjustRations}
+      </li>
+    </ul>;
+  }
+  return (
+    <ul className='itemList'>
+      {items.map(item => (
+        <Item
+          key= {item.id}
+          selectedItem= {selectedItem}
+          item= {item}
+          onClick= {() => onItemClick(item)}
+        />
+      ))}
+    </ul>
+  )
+};
 
 export default ItemList;

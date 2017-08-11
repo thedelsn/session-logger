@@ -8,8 +8,9 @@ import ItemList from './ItemList';
 
 const ItemPane = ({
   selectedItem, 
-  items, 
+  items,
   itemType,
+  numCharacters,
   onItemClick, 
   onInputFieldChange
 }) => (
@@ -27,6 +28,7 @@ const ItemPane = ({
       onItemClick={(item) => {
         onItemClick(item)
       }}
+      numCharacters={numCharacters}
       selectedItem={selectedItem}
     />
   </div>
@@ -36,6 +38,7 @@ const mapStateToProps = (state, ownProps) => ({
   selectedItem: state.selectedItem,
   items: state.data[ownProps.itemType],
   itemType: ownProps.itemType,
+  numCharacters: state.data.characters.length,
   //itemLabel: ownProps.itemLabel
 });
 const mapDispatchToProps = (dispatch) => ({

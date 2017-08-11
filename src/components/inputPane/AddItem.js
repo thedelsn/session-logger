@@ -6,10 +6,12 @@ const AddItem = ({
   dispatch,
   itemType,
   toFocusId,
+  disabled,
   children
 }) => (
   <button 
     className= 'addButton'
+    disabled={disabled}
     onMouseDown={(event) => {
       event.preventDefault();
       const action = addItem(itemType);

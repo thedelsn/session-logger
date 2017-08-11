@@ -25,13 +25,26 @@ const Link = ({
 };
 
 //DisplayLink
-const mapStateToProps = (state, ownProps) => ({
-  active: ownProps.itemType ===
-  state.selectedItem.itemType,
-  toSelect: (state.data[ownProps.itemType] ?
-    state.data[ownProps.itemType][0] || {itemType: ownProps.itemType} : 
-    {itemType: ownProps.itemType})
-});
+const mapStateToProps = (state, ownProps) => {
+  let toSelect;
+  if (ownProps.itemType === 'details') {
+    toSelect={
+      itemType: 'details',
+      id: 0,
+      ...state.data.details
+    }
+  } else {
+    toSelect=(state.data[ownProps.itemType] ?
+      state.data[ownProps.itemType][0] || {itemType: ownProps.itemType, id: -1} : 
+      {itemType: ownProps.itemType}
+    )
+  }
+  return {
+    active: ownProps.itemType ===
+    state.selectedItem.itemType,
+    toSelect 
+  }
+};
 const mapDispatchToProps = (dispatch, ownProps) => ({
   onClick: (toSelect) => {
     dispatch(setSelectedToItem(toSelect));
@@ -44,6 +57,11 @@ const DisplayLink = connect(
 
 const Header = () => (
   <p className='header'>
+    <DisplayLink
+      itemType='details'
+    >
+      Details
+    </DisplayLink>
     <DisplayLink
       itemType='characters'
     >

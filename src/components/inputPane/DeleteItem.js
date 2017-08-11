@@ -5,11 +5,13 @@ import {deleteItem, setSelectedToItem} from '../../actions';
 const DeleteItem = ({
   selectedItem,
   toSelect,
+  disabled,
   onClick,
   children
 }) => (
   <button 
     className='deleteButton'
+    disabled={disabled}
     onMouseDown={(event) => {
       event.preventDefault();
       onClick(selectedItem, toSelect)

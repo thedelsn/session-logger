@@ -1,9 +1,37 @@
+importing data doesn't set add item new ids correctly, how to fix this?
 
+clicking the increment buttons doesn't change the values in the input fields, and the rations one doesn't change the value in the itemlist
+
+re-order list items
+undo function?
+
+poi heading with poi mpoi new hex as subheadings
+reorganize the poi input fields
+auto calculate distance from wall?
+
+- if all xps or gps are the same, just put ‘everyone earned’
+
+show cr on encounters
+
+implement party gp adjust and xp adjust
+
+add description to monsters
 add brief instructions
 hitting enter gets you a new entry
 re-order log sections
 days out and rations
 better highlighting for selected item
+
+
+arcana checks to catch multiple peeps can't be rolled in advance
+saving allies rules
+
+
+
+- look into plane tickets!
+- buy play tickets
+- buy pillowcases and phone case!
+- send james the thing
 
 -----
 

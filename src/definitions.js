@@ -158,6 +158,12 @@ export const fieldTypes = {
       display: '# Fled',
       type: 'number'
     },
+    {
+      id: 'xpOverwrite',
+      itemType: 'monsters',
+      display: 'Overwrite XP to',
+      type: 'number'
+    },
     //bonusMult is implemented separately
   ],
   expenses: [
@@ -235,7 +241,7 @@ export const fieldTypes = {
     {
       id: 'adjustRations',
       itemType: 'details',
-      display: 'Adjust Rations',
+      display: 'Adjust Rations Used',
       type: 'number',
     },
   ],

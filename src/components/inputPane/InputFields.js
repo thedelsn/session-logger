@@ -7,6 +7,7 @@ import CharacterSelectField from './CharacterSelectField';
 import BonusMultSelectField from './BonusMultSelectField';
 import PoiTypeSelectField from './PoiTypeSelectField';
 import AdjustPotionButton from './AdjustPotionButton';
+import IncrementDaysOutButton from './IncrementDaysOutButton';
 
 const PrependInputFields = ({itemType, disabled}) => {
   switch (itemType) {
@@ -32,6 +33,10 @@ const PrependInputFields = ({itemType, disabled}) => {
           plusOrMinus='minus' 
           disabled={disabled}
         />
+      </div>
+    case 'details':
+      return <div>
+        <IncrementDaysOutButton />
       </div>
     default:
       return null;
@@ -67,25 +72,42 @@ const AppendInputFields = ({itemType, disabled}) => {
   }
 };
 
-const InputFields = ({
+const AddDeleteButtons = ({
   fields,
   selectedItem
-}) => (
-  <div className= 'inputFields'>
+}) => {
+  const disabled = selectedItem.itemType === 'details' ?
+    true :
+    false;
+  return (
     <div className='addDeleteButtons'>
       <AddItem
         itemType={fields[0].itemType}
         toFocusId={fields[0].id}
+        disabled={disabled}
       >
         New<span> Item</span>
       </AddItem>
       <DeleteItem
         itemType={selectedItem.itemType}
         selectedItem={selectedItem}
+        disabled={disabled}
       >
         Delete<span> Item</span>
       </DeleteItem>
     </div>
+  )
+};
+
+const InputFields = ({
+  fields,
+  selectedItem
+}) => (
+  <div className= 'inputFields'>
+    <AddDeleteButtons
+      fields={fields}
+      selectedItem={selectedItem}
+    />
     <PrependInputFields
       itemType={selectedItem.itemType}
       disabled={selectedItem.id === -1 ?

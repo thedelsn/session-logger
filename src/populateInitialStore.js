@@ -6,7 +6,6 @@ const populateInitialStore = (store) => {
 	store.dispatch(addItem('treasures'));
 	store.dispatch(addItem('expenses'));
 	store.dispatch(addItem('pois'));
-	store.dispatch(setInfo({id:0, itemType: 'details'}, 'daysOut', 5))
 	store.dispatch({
 		type: 'SET_INFO',
 		itemType: 'expenses',
